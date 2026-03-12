@@ -33,43 +33,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # ─── Ollama ────────────────────────────────────────────────
-  ollama:
-    image: ollama/ollama:latest
-    restart: unless-stopped
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:11434/ || exit 1"]
-      interval: 10s
-      timeout: 10s
-      retries: 10
-    # Uncomment below for GPU support (NVIDIA)
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: all
-    #           capabilities: [gpu]
-
-  # ─── Pull models on startup ────────────────────────────────
-  ollama-pull:
-    image: curlimages/curl:latest
-    depends_on:
-      ollama:
-        condition: service_healthy
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        echo "Pulling LLM model..."
-        curl -sf http://ollama:11434/api/pull -d '{"name":"llama3"}' | head -1
-        echo "Pulling embedding model..."
-        curl -sf http://ollama:11434/api/pull -d '{"name":"nomic-embed-text"}' | head -1
-        echo "Models ready."
-
   # ─── Agent API ─────────────────────────────────────────────
   agent-api:
     build: .
@@ -86,8 +49,6 @@ services:
         condition: service_healthy
       qdrant:
         condition: service_healthy
-      ollama-pull:
-        condition: service_completed_successfully
       browserless:
         condition: service_healthy
     healthcheck:
@@ -137,5 +98,4 @@ services:
 volumes:
   pgdata:
   qdrant_data:
-  ollama_data:
   anythingllm_data:
