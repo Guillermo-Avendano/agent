@@ -1,0 +1,141 @@
+services:
+  # ─── PostgreSQL ────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-agent_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_in_production}
+      POSTGRES_DB: ${POSTGRES_DB:-agent_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-agent_user}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─── Qdrant ────────────────────────────────────────────────
+  qdrant:
+    image: qdrant/qdrant:v1.13.2
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:6333/healthz || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─── Ollama ────────────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:11434/ || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    # Uncomment below for GPU support (NVIDIA)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  # ─── Pull models on startup ────────────────────────────────
+  ollama-pull:
+    image: curlimages/curl:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Pulling LLM model..."
+        curl -sf http://ollama:11434/api/pull -d '{"name":"llama3"}' | head -1
+        echo "Pulling embedding model..."
+        curl -sf http://ollama:11434/api/pull -d '{"name":"nomic-embed-text"}' | head -1
+        echo "Models ready."
+
+  # ─── Agent API ─────────────────────────────────────────────
+  agent-api:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./charts_output:/app/charts_output
+      - ./schema_descriptions:/app/schema_descriptions:ro
+      - ./files_for_memory:/app/files_for_memory:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+      ollama-pull:
+        condition: service_completed_successfully
+      browserless:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Browserless Chromium (web scraping) ───────────────────
+  browserless:
+    image: ghcr.io/browserless/chromium:v2.39.0
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      # Timeout for page loads (ms)
+      DEFAULT_LAUNCH_ARGS: '["--no-sandbox","--disable-setuid-sandbox"]'
+      TIMEOUT: 30000
+      CONCURRENT: 5
+      QUEUED: 10
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3000/json/version || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── AnythingLLM ─────────────────────────────────────────
+  anythingllm:
+    image: mintplexlabs/anythingllm:latest
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - anythingllm_data:/app/server/storage
+    environment:
+      STORAGE_DIR: /app/server/storage
+      LLM_PROVIDER: generic-openai
+      GENERIC_OPEN_AI_BASE_PATH: http://agent-api:8000/v1
+      GENERIC_OPEN_AI_MODEL_PREF: sql-agent
+      GENERIC_OPEN_AI_TOKEN_LIMIT: 8192
+      # No API key needed — leave empty
+      GENERIC_OPEN_AI_API_KEY: sk-not-required
+    depends_on:
+      agent-api:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  qdrant_data:
+  ollama_data:
+  anythingllm_data:

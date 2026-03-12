@@ -1,0 +1,14 @@
+.env
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+.git
+.venv
+venv
+*.log
+charts_output
+.coverage
+htmlcov
+README.md
+chat.txt

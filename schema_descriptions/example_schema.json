@@ -1,0 +1,47 @@
+{
+  "tables": [
+    {
+      "name": "customers",
+      "description": "Registered customers of the platform.",
+      "columns": [
+        {"name": "id", "type": "serial", "description": "Primary key, auto-increment."},
+        {"name": "name", "type": "varchar(200)", "description": "Full name of the customer."},
+        {"name": "email", "type": "varchar(255)", "description": "Unique email address."},
+        {"name": "created_at", "type": "timestamptz", "description": "Registration timestamp."}
+      ]
+    },
+    {
+      "name": "products",
+      "description": "Catalog of available products.",
+      "columns": [
+        {"name": "id", "type": "serial", "description": "Primary key."},
+        {"name": "name", "type": "varchar(200)", "description": "Product display name."},
+        {"name": "price", "type": "numeric(10,2)", "description": "Unit price in USD."},
+        {"name": "category", "type": "varchar(100)", "description": "Product category."},
+        {"name": "stock", "type": "integer", "description": "Current stock quantity."}
+      ]
+    },
+    {
+      "name": "orders",
+      "description": "Purchase orders placed by customers.",
+      "columns": [
+        {"name": "id", "type": "serial", "description": "Primary key."},
+        {"name": "customer_id", "type": "integer", "description": "FK to customers.id."},
+        {"name": "total", "type": "numeric(12,2)", "description": "Order total in USD."},
+        {"name": "status", "type": "varchar(50)", "description": "Order status: pending, shipped, delivered, cancelled."},
+        {"name": "created_at", "type": "timestamptz", "description": "Order creation timestamp."}
+      ]
+    },
+    {
+      "name": "order_items",
+      "description": "Line items within an order.",
+      "columns": [
+        {"name": "id", "type": "serial", "description": "Primary key."},
+        {"name": "order_id", "type": "integer", "description": "FK to orders.id."},
+        {"name": "product_id", "type": "integer", "description": "FK to products.id."},
+        {"name": "quantity", "type": "integer", "description": "Quantity ordered."},
+        {"name": "unit_price", "type": "numeric(10,2)", "description": "Price at time of purchase."}
+      ]
+    }
+  ]
+}
