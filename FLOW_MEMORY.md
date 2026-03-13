@@ -213,15 +213,50 @@ _retrieve_schema_context(question, top_k=5)    ← agent/core.py
              (si Qdrant no responde o colección vacía)
 ```
 
+### 4.1 Retrieval — `_retrieve_document_context()`
+
+Also runs **on every question** within `ask_agent()`, in parallel with schema retrieval.
+
+```
+_retrieve_document_context(question, top_k=3)    ← agent/core.py
+   │
+   ├─ client = get_qdrant_client()
+   ├─ embeddings = get_embeddings()
+   │
+   ├─ results = client.query_points(
+   │      "schema_memory",
+   │      query = embeddings.embed_query(question),
+   │      query_filter = Filter(
+   │          must=[FieldCondition(key="type", match=MatchValue(value="document"))]
+   │      ),
+   │      limit = 3,
+   │      with_payload = True
+   │  )
+   │    └─ Only searches chunks with type="document" (from files_for_memory/)
+   │
+   ├─ Filter by score >= 0.35
+   │    └─ Discards low-relevance matches
+   │
+   ├─ Format each result:
+   │    "[Source: {filename}]\n{text}"
+   │
+   └─ Returns: joined string with document context
+        │
+        └─ Fallback: "" (empty string if no relevant documents)
+```
+
+---
+
 ### ¿Cómo se usa el contexto recuperado?
 
 ```
 SYSTEM_PROMPT.format(
-    schema_context = <resultado del retrieval>,
+    schema_context  = <resultado de _retrieve_schema_context>,
+    document_context = <resultado de _retrieve_document_context>,
     max_rows = 1000
 )
 
-Ejemplo del prompt resultante (sección de contexto):
+Ejemplo del prompt resultante (secciones de contexto):
 
    "### Database context
     Table: customers
@@ -231,18 +266,20 @@ Ejemplo del prompt resultante (sección de contexto):
       - name (varchar(200)): Customer full name
       ...
 
-    Table: orders
-    Description: Customer orders with status tracking
-    Columns:
-      - id (serial): Primary key
-      - customer_id (integer): FK to customers
-      ..."
+    ### Document context
+    [Source: contentedge_knowledge.md]
+    ContentEdge is a revolutionary content management platform...
+    
+    [Source: guille_agent_documentation.md]
+    Guille-Agent is an AI-powered assistant..."
 ```
 
 El LLM usa este contexto para:
-- Saber qué tablas y columnas existen
+- Saber qué tablas y columnas existen (schema_context)
 - Escribir SQL con los nombres correctos
 - Entender las relaciones entre tablas
+- Responder preguntas sobre ContentEdge y sus capacidades (document_context)
+- Describir sus propias funcionalidades cuando se le pregunta (document_context)
 
 ---
 
@@ -327,9 +364,19 @@ search_similar(client, embeddings, collection, query, top_k=5)
   Se inyectan como {schema_context}
   en el SYSTEM_PROMPT del agente
         │
+        │  (en paralelo)
+        │
+  Top 3 document chunks (score >= 0.35)
+        │
         ▼
-  El LLM "conoce" las tablas y columnas
-  → genera SQL correcto
+  Se inyectan como {document_context}
+  en el SYSTEM_PROMPT del agente
+        │
+        ▼
+  El LLM "conoce" las tablas, columnas,
+  documentación de ContentEdge y
+  las capacidades de Guille-Agent
+  → genera respuestas precisas
 ```
 
 ---
@@ -397,8 +444,9 @@ search_similar(client, embeddings, collection, query, top_k=5)
 | `app/memory/file_loader.py` | `_split_text()` | Divide texto en chunks |
 | `app/memory/schema_loader.py` | `load_all_schemas()` | Indexa JSONs de esquema |
 | `app/memory/schema_loader.py` | `_build_description_texts()` | Genera texto de tablas |
-| `app/agent/core.py` | `_retrieve_schema_context()` | RAG: recupera contexto por pregunta |
-| `app/agent/prompts.py` | `SYSTEM_PROMPT` | Template con `{schema_context}` |
+| `app/agent/core.py` | `_retrieve_schema_context()` | RAG: recupera contexto de esquema |
+| `app/agent/core.py` | `_retrieve_document_context()` | RAG: recupera contexto de documentos |
+| `app/agent/prompts.py` | `SYSTEM_PROMPT` | Template con `{schema_context}` y `{document_context}` |
 
 ---
 

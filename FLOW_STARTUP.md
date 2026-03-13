@@ -1,4 +1,4 @@
-# FLOW_STARTUP — Arranque de la Aplicación
+# FLOW_STARTUP — Guille-Agent: Arranque de la Aplicación
 
 ## Resumen
 
@@ -13,8 +13,9 @@ está lista para recibir peticiones.
 postgres ──────────┐
 qdrant  ───────────┤
 ollama ─▸ ollama-pull ─┤
-browserless ───────────┼─▸ agent-api ─▸ anythingllm
-                       │
+browserless ───────────┼─▸ agent-api ──┬─▸ anythingllm
+                       │              │
+                       └──────────────┴─▸ contentedge-mcp
 ```
 
 Cada servicio declara un **healthcheck** en `docker-compose.yml`.
@@ -26,9 +27,10 @@ antes de arrancar.
 | `postgres` | 5432 | `pg_isready -U agent_user -d agent_db` | BD relacional |
 | `qdrant` | 6333 / 6334 | TCP al puerto 6333 | BD vectorial |
 | `ollama` | 11434 | — | Servidor LLM |
-| `ollama-pull` | — | termina con exit 0 | Descarga `llama3` + `nomic-embed-text` |
+| `ollama-pull` | — | termina con exit 0 | Descarga `nomic-embed-text` (embeddings) |
 | `browserless` | 3000 (interno) | `/json/version` | Chromium headless |
-| `agent-api` | 8000 | `curl http://localhost:8000/health` | API FastAPI |
+| `agent-api` | 8000 | `curl http://localhost:8000/health` | Guille-Agent API (FastAPI) |
+| `contentedge-mcp` | 8001 | — | MCP server for ContentEdge |
 | `anythingllm` | 3001 | — | Chat UI |
 
 ---
@@ -61,7 +63,7 @@ config.py → class Settings(BaseSettings)
    ├─ Lee .env (o variables de entorno)
    │    POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
    │    QDRANT_HOST, QDRANT_PORT, QDRANT_COLLECTION ("schema_memory")
-   │    OLLAMA_BASE_URL, OLLAMA_MODEL ("llama3"), OLLAMA_EMBED_MODEL ("nomic-embed-text")
+   │    OLLAMA_BASE_URL, OLLAMA_MODEL ("gpt-oss"), OLLAMA_EMBED_MODEL ("nomic-embed-text")
    │    BROWSERLESS_URL, SQL_READONLY (True), MAX_QUERY_ROWS (1000)
    │    LOG_LEVEL, ALLOWED_ORIGINS, APP_HOST, APP_PORT
    │
@@ -100,7 +102,14 @@ lifespan(app)   ← asynccontextmanager
    │
    ├─▸ load_files_for_memory()            ← memory/file_loader.py
    │      │
+   │      ├─ DEDUP: Deletes all existing type="document" points from Qdrant
+   │      │    └─ Prevents duplicate chunks on container restart
+   │      │
    │      ├─ Escanea /app/files_for_memory/ buscando .pdf, .txt, .md
+   │      │    Archivos actuales:
+   │      │    ├─ guille_agent_documentation.md (self-knowledge)
+   │      │    ├─ contentedge_knowledge.md (ContentEdge product info)
+   │      │    └─ contentedge-unlock-maximum-value-datasheet.pdf
    │      │
    │      ├─ Por cada archivo:
    │      │    ├─ Lee contenido (pypdf para PDF, lectura directa para txt/md)
@@ -156,7 +165,7 @@ t=1   postgres: arranca → ejecuta init_db.sql → healthcheck OK
       ollama: arranca
       browserless: arranca → healthcheck OK
       │
-t=2   ollama-pull: descarga llama3 + nomic-embed-text → exit 0
+t=2   ollama-pull: descarga nomic-embed-text → exit 0
       │
 t=3   agent-api: arranca
       ├─ Lee .env / config
@@ -166,15 +175,22 @@ t=3   agent-api: arranca
       │    └─ load_files_for_memory()
       │         ├─ Conecta a Qdrant
       │         ├─ Asegura existencia de colección "schema_memory"
+      │         ├─ DEDUP: elimina puntos type="document" existentes
       │         ├─ Lee archivos → chunks → embeddings → upsert
       │         └─ Log: "app.files_loaded"
       ├─ healthcheck: GET /health → 200 OK
       └─ Escucha en 0.0.0.0:8000
       │
-t=4   anythingllm: arranca
+t=4   contentedge-mcp: arranca
+      ├─ FastMCP server (Python 3.11, SSE transport)
+      ├─ 6 tools: list_repositories, list_index_groups, search_documents, ...
+      ├─ Health check: GET /repositories validates Mobius repo
+      └─ Escucha en 0.0.0.0:8001
+      │
+      anythingllm: arranca
       ├─ Configurado con LLM_PROVIDER=generic-openai
       ├─ Apunta a http://agent-api:8000/v1
-      ├─ GET /v1/models → recibe "sql-agent"
+      ├─ GET /v1/models → recibe "guille-agent"
       └─ Escucha en 0.0.0.0:3001
       │
       ═══════════════════════════════════
@@ -195,3 +211,4 @@ t=4   anythingllm: arranca
 | `app/db/connection.py` | Pool async de PostgreSQL |
 | `app/memory/file_loader.py` | Indexa documentos en Qdrant al inicio |
 | `app/memory/qdrant_store.py` | Cliente Qdrant, embeddings, upsert |
+| `contentedge/mcp_server.py` | MCP server para ContentEdge (6 tools) |
