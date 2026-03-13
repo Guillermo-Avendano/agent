@@ -51,11 +51,16 @@ async def ask_agent(
 
     Returns a dict with keys: answer, sql, chart_path, data_preview.
     """
+    logger.info("▶ agent.start", question=question[:200])
+
     # Bind the DB session for agent tools
     bind_session(session)
+    logger.info("  ├─ session bound")
 
     # Retrieve relevant schema context from Qdrant
     schema_context = _retrieve_schema_context(question)
+    ctx_preview = schema_context[:200].replace("\n", " ")
+    logger.info("  ├─ schema context retrieved", preview=ctx_preview)
 
     system_text = SYSTEM_PROMPT.format(
         schema_context=schema_context,
@@ -65,6 +70,8 @@ async def ask_agent(
     # Build the agent
     llm = _get_llm()
     agent = create_react_agent(llm, AGENT_TOOLS)
+    logger.info("  ├─ ReAct agent built", model=settings.ollama_model,
+                tools=[t.name for t in AGENT_TOOLS])
 
     # Build messages
     messages = [SystemMessage(content=system_text)]
@@ -79,29 +86,36 @@ async def ask_agent(
                 messages.append(AIMessage(content=content))
 
     messages.append(HumanMessage(content=question))
-
-    logger.info("agent.invoke", question=question[:100])
+    logger.info("  ├─ messages built", count=len(messages),
+                history_msgs=len(chat_history) if chat_history else 0)
 
     # Invoke agent
+    logger.info("  ├─ invoking LLM + agent loop ...")
     result = await agent.ainvoke({"messages": messages})
 
-    # Extract the final answer
+    # ── Log every message in the agent trace ──
     final_messages = result.get("messages", [])
-    answer = ""
-
-    # Debug: log all message types to diagnose extraction
+    logger.info("  ├─ agent loop done", total_messages=len(final_messages))
     for i, msg in enumerate(final_messages):
-        logger.info(
-            "agent.message",
-            idx=i,
-            type=type(msg).__name__,
-            has_content=bool(getattr(msg, "content", None)),
-            content_preview=str(getattr(msg, "content", ""))[:120],
-            tool_calls=bool(getattr(msg, "tool_calls", None)),
-        )
+        msg_type = type(msg).__name__
+        content_raw = getattr(msg, "content", "") or ""
+        content_preview = str(content_raw)[:300].replace("\n", " ")
+        tool_calls = getattr(msg, "tool_calls", None)
+        tool_name = getattr(msg, "name", None)  # ToolMessage has .name
+        extras = {}
+        if tool_calls:
+            extras["tool_calls"] = [
+                {"name": tc.get("name"), "args_preview": str(tc.get("args", ""))[:200]}
+                for tc in tool_calls
+            ]
+        if tool_name:
+            extras["tool_name"] = tool_name
+        logger.info(f"  │  [{i}] {msg_type}",
+                    content_preview=content_preview, **extras)
 
+    # Extract the final answer
+    answer = ""
     for msg in reversed(final_messages):
-        # Skip tool result messages
         if type(msg).__name__ == "ToolMessage":
             continue
         content = getattr(msg, "content", None)
@@ -109,17 +123,28 @@ async def ask_agent(
             answer = content if isinstance(content, str) else str(content)
             break
 
+    logger.info("  ├─ answer extracted",
+                length=len(answer),
+                preview=answer[:200].replace("\n", " "))
+
     # Check for chart output
     df = get_last_dataframe()
     data_preview = None
     if df is not None and not df.empty:
         data_preview = df.head(20).to_dict(orient="records")
+        logger.info("  ├─ dataframe available", rows=len(df),
+                    columns=list(df.columns))
 
     # Detect chart path in tool messages
     chart_path = None
     for msg in final_messages:
         if hasattr(msg, "content") and "Chart saved to:" in str(msg.content):
             chart_path = str(msg.content).split("Chart saved to:")[-1].strip()
+
+    if chart_path:
+        logger.info("  ├─ chart generated", path=chart_path)
+
+    logger.info("  └─ agent.done")
 
     return {
         "answer": answer,

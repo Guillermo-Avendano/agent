@@ -15,6 +15,7 @@ matplotlib==3.10.*
 plotly==6.*
 kaleido==0.2.*
 pandas==2.*
+tabulate==0.9.*
 sqlparse==0.5.*
 structlog==24.*
 slowapi==0.1.*

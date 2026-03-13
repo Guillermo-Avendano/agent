@@ -4,11 +4,13 @@ Exposes /v1/chat/completions and /v1/models so AnythingLLM
 can treat this agent as a custom LLM provider.
 """
 
+import json
 import time
 import uuid
 
 import structlog
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
+from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.connection import get_session
@@ -38,7 +40,7 @@ async def list_models():
     )
 
 
-@openai_router.post("/chat/completions", response_model=OpenAIChatResponse)
+@openai_router.post("/chat/completions")
 async def chat_completions(
     request: OpenAIChatRequest,
     session: AsyncSession = Depends(get_session),
@@ -82,9 +84,55 @@ async def chat_completions(
             logger.error("openai_compat.error", error=str(e))
             answer = f"Error processing your question: {e}"
 
+    completion_id = f"chatcmpl-{uuid.uuid4().hex[:12]}"
+    created = int(time.time())
+
+    # ── Streaming response (SSE) ─────────────────────────────
+    if request.stream:
+        async def _stream_sse():
+            # Single content chunk with the full answer
+            chunk = {
+                "id": completion_id,
+                "object": "chat.completion.chunk",
+                "created": created,
+                "model": request.model,
+                "choices": [
+                    {
+                        "index": 0,
+                        "delta": {"role": "assistant", "content": answer},
+                        "finish_reason": None,
+                    }
+                ],
+            }
+            yield f"data: {json.dumps(chunk)}\n\n"
+
+            # Final chunk signaling completion
+            done_chunk = {
+                "id": completion_id,
+                "object": "chat.completion.chunk",
+                "created": created,
+                "model": request.model,
+                "choices": [
+                    {
+                        "index": 0,
+                        "delta": {},
+                        "finish_reason": "stop",
+                    }
+                ],
+            }
+            yield f"data: {json.dumps(done_chunk)}\n\n"
+            yield "data: [DONE]\n\n"
+
+        return StreamingResponse(
+            _stream_sse(),
+            media_type="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        )
+
+    # ── Non-streaming response ───────────────────────────────
     return OpenAIChatResponse(
-        id=f"chatcmpl-{uuid.uuid4().hex[:12]}",
-        created=int(time.time()),
+        id=completion_id,
+        created=created,
         model=request.model,
         choices=[
             OpenAIChatChoice(

@@ -4,6 +4,7 @@ import json
 import re
 
 import pandas as pd
+import structlog
 from langchain_core.tools import tool
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,6 +12,7 @@ from app.db.executor import run_query
 from app.db.safety import UnsafeSQLError
 from app.charts.generator import create_chart
 
+logger = structlog.get_logger(__name__)
 
 # These are bound at runtime by the agent core before each invocation.
 _session_ref: AsyncSession | None = None
@@ -34,17 +36,23 @@ async def execute_sql(query: str) -> str:
         query: A valid SELECT SQL query.
     """
     global _last_dataframe
+    logger.info("  │  ▶ execute_sql called", query=query[:500])
     if _session_ref is None:
+        logger.error("  │  ✗ no database session")
         return "Error: No database session available."
     try:
         df = await run_query(_session_ref, query)
         _last_dataframe = df
         if df.empty:
+            logger.info("  │  ✓ query OK — 0 rows")
             return "Query returned no results."
+        logger.info("  │  ✓ query OK", rows=len(df), columns=list(df.columns))
         return df.to_markdown(index=False)
     except UnsafeSQLError as e:
+        logger.warning("  │  ✗ blocked by safety", reason=str(e))
         return f"Blocked: {e}"
     except Exception as e:
+        logger.error("  │  ✗ SQL error", error=str(e))
         return f"SQL Error: {e}"
 
 
@@ -57,7 +65,9 @@ def generate_chart(spec_json: str) -> str:
             Example: {"chart_type": "bar", "x": "category", "y": "total_sales", "title": "Sales by Category"}
     """
     global _last_dataframe
+    logger.info("  │  ▶ generate_chart called", spec=spec_json[:300])
     if _last_dataframe is None or _last_dataframe.empty:
+        logger.warning("  │  ✗ no dataframe available")
         return "Error: No data available. Execute a SQL query first."
     try:
         spec = json.loads(spec_json)

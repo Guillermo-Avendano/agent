@@ -24,7 +24,7 @@ async def _fetch_via_browserless(url: str) -> str:
     browserless_url = f"{settings.browserless_url}/content"
     payload = {
         "url": url,
-        "waitForSelector": "body",
+        "waitForSelector": {"selector": "body", "timeout": 10000},
         "gotoOptions": {"waitUntil": "domcontentloaded", "timeout": 15000},
     }
     async with httpx.AsyncClient(timeout=20) as client:
