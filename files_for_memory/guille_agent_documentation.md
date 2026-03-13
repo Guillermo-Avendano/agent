@@ -118,12 +118,28 @@ For each user question, the agent follows this pattern:
 
 ## Available Tools
 
+### Agent Tools (built-in)
+
 | Tool | Description |
 |------|-------------|
 | `execute_sql` | Runs read-only SELECT queries against PostgreSQL. Validates for safety. Returns markdown table. |
 | `generate_chart` | Creates bar/line/pie/scatter/histogram charts from query results using Matplotlib. |
 | `web_search` | Searches DuckDuckGo via Browserless Chromium, returns top 3 results with content. |
 | `fetch_webpage` | Reads a specific URL, renders JavaScript, returns cleaned text content. |
+
+### ContentEdge MCP Tools (via MCP server on port 8001)
+
+| Tool | Description |
+|------|-------------|
+| `list_content_classes` | Lists all content classes with id, name, and description. |
+| `list_indexes` | Lists index groups (mandatory) and individual indexes. |
+| `search_documents` | Searches documents by index constraints (index_name, operator, value). |
+| `archive_documents` | Archives files with metadata into a content class. |
+| `retrieve_document` | Downloads a document by its objectId. |
+| `get_versions` | Gets document versions for a report within a date range. |
+
+All MCP tools check repository availability before executing. If the Content Repository
+is not active, they return an error message asking to activate it.
 
 ---
 
@@ -139,10 +155,11 @@ Guille-Agent uses **Qdrant** as its vector memory store with two types of data:
 
 ### Document Memory (type: document)
 - Source: `files_for_memory/` directory (PDFs, TXT, MD files)
-- Loaded automatically at startup
+- Loaded automatically at startup (previous document chunks are cleaned first to avoid duplicates)
 - Split into ~1000 character chunks with 200 character overlap
 - Embedded using nomic-embed-text model (768 dimensions)
 - Used for ContentEdge knowledge, agent documentation, and any uploaded documents
+- Semantic search with score threshold (>= 0.35) filters irrelevant results
 
 ### How Retrieval Works
 1. User asks a question
