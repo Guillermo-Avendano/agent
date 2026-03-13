@@ -409,7 +409,7 @@ Se inyecta en {schema_context} del SYSTEM_PROMPT
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| `GET` | `/v1/models` | Lista modelos (devuelve "sql-agent") |
+| `GET` | `/v1/models` | Lista modelos (devuelve "guille-agent") |
 | `POST` | `/v1/chat/completions` | Chat completions — usado por AnythingLLM |
 
 ### Flujo AnythingLLM → Agente
@@ -417,11 +417,11 @@ Se inyecta en {schema_context} del SYSTEM_PROMPT
 ```
 AnythingLLM
    │
-   ├─ En setup: GET /v1/models → recibe "sql-agent"
+   ├─ En setup: GET /v1/models → recibe "guille-agent"
    │
    └─ Cada mensaje:
       POST /v1/chat/completions
-        { model: "sql-agent", messages: [...] }
+        { model: "guille-agent", messages: [...] }
               │
               ▼
       openai_compat.py
