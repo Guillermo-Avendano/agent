@@ -52,8 +52,8 @@ async def lifespan(app: FastAPI):
 
 # ─── App ─────────────────────────────────────────────────────
 app = FastAPI(
-    title="SQL Agent API",
-    description="AI agent that queries PostgreSQL, explains results, and generates charts.",
+    title="Guille Agent API",
+    description="AI agent that queries PostgreSQL, explains results, generates charts, and manages ContentEdge.",
     version="1.0.0",
     lifespan=lifespan,
 )

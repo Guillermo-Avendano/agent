@@ -1,0 +1,40 @@
+{
+    "indexSearch": {
+        "advancedDescription": null,
+        "conjunction": "AND",
+        "constraints": [
+            {
+                "name": "ACCTCODE",
+                "operator": "EQ",
+                "values": [
+                    {
+                        "value": "1000"
+                    }
+                ]
+            },
+            {
+                "name": "ACCTCODE",
+                "operator": "EQ",
+                "values": [
+                    {
+                        "value": "888"
+                    }
+                ]
+            }
+        ],
+        "distinct": false,
+        "exitOnError": true,
+        "name": "Creating a new search",
+        "repositories": [
+            {
+                "id": "4485185F-EAF4-4237-AE53-48647DDBA01F"
+            }
+        ],
+        "returnedIndexes": [
+            {
+                "name": "ACCTCODE"
+            }
+        ],
+        "textFilter": null
+    }
+}

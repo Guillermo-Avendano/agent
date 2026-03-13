@@ -1,0 +1,39 @@
+2025-06-25 14:26:32,694 - INFO - ---------------------------#  NEW SESSION #--------------------------------
+2025-06-25 14:26:32,696 - INFO -                  ___ 
+2025-06-25 14:26:32,696 - INFO -                 /     __      ___ __     ___     /\    __ 
+2025-06-25 14:26:32,696 - INFO -                 |    |  | |\ | | |__ |\ | |     /__\  |__| |
+2025-06-25 14:26:32,696 - INFO -                 \___ |__| | \| | |__ | \| |    /    \ |    |
+2025-06-25 14:26:32,696 - INFO - ---------------------------------------------------------------------------
+2025-06-25 14:26:32,697 - INFO - Configuration file : C:\git\content-python-library\dev\conf\rocketcontent.yaml
+2025-06-25 14:26:32,697 - INFO - Repository Configuration:
+2025-06-25 14:26:32,697 - INFO -   Repo URL  : https://services-us-virginia-m-1.skytap.com:8682
+2025-06-25 14:26:32,697 - INFO -   Repo Name : Mobius
+2025-06-25 14:26:32,697 - INFO -   Repo User : admin
+2025-06-25 14:26:32,697 - INFO -   Repo ID   : 9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C
+2025-06-25 14:26:32,697 - INFO -   Log Level : DEBUG
+2025-06-25 14:26:32,697 - INFO -   Log File  : c:\git\content-python-library\dev\rocketcontent\log/content_services_api_2025-06-25.txt
+2025-06-25 14:26:32,697 - INFO - --------------------------------
+2025-06-25 14:26:32,697 - DEBUG - Method : get_repo_capabilities
+2025-06-25 14:26:32,697 - INFO - Checking if Content Repository is active ...
+2025-06-25 14:26:32,697 - INFO - Request URL: https://services-us-virginia-m-1.skytap.com:8682/mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/capabilities
+2025-06-25 14:26:32,697 - DEBUG - Repository ID: 9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C
+2025-06-25 14:26:53,759 - ERROR - Connection to Content Repository was not possible, verifies network connection or the server: HTTPSConnectionPool(host='services-us-virginia-m-1.skytap.com', port=8682): Max retries exceeded with url: /mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/capabilities (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002B9D1058FD0>, 'Connection to services-us-virginia-m-1.skytap.com timed out. (connect timeout=None)'))
+2025-06-25 14:28:35,844 - INFO - ---------------------------#  NEW SESSION #--------------------------------
+2025-06-25 14:28:35,844 - INFO -                  ___ 
+2025-06-25 14:28:35,844 - INFO -                 /     __      ___ __     ___     /\    __ 
+2025-06-25 14:28:35,845 - INFO -                 |    |  | |\ | | |__ |\ | |     /__\  |__| |
+2025-06-25 14:28:35,845 - INFO -                 \___ |__| | \| | |__ | \| |    /    \ |    |
+2025-06-25 14:28:35,845 - INFO - ---------------------------------------------------------------------------
+2025-06-25 14:28:35,845 - INFO - Configuration file : C:\git\content-python-library\dev\conf\rocketcontent.yaml
+2025-06-25 14:28:35,846 - INFO - Repository Configuration:
+2025-06-25 14:28:35,846 - INFO -   Repo URL  : https://services-us-virginia-m-1.skytap.com:8682
+2025-06-25 14:28:35,846 - INFO -   Repo Name : Mobius
+2025-06-25 14:28:35,846 - INFO -   Repo User : admin
+2025-06-25 14:28:35,846 - INFO -   Repo ID   : 9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C
+2025-06-25 14:28:35,846 - INFO -   Log Level : DEBUG
+2025-06-25 14:28:35,846 - INFO -   Log File  : c:\git\content-python-library\dev\rocketcontent\log/content_services_api_2025-06-25.txt
+2025-06-25 14:28:35,848 - INFO - --------------------------------
+2025-06-25 14:28:35,848 - DEBUG - Method : get_repo_capabilities
+2025-06-25 14:28:35,848 - INFO - Checking if Content Repository is active ...
+2025-06-25 14:28:35,848 - INFO - Request URL: https://services-us-virginia-m-1.skytap.com:8682/mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/capabilities
+2025-06-25 14:28:35,848 - DEBUG - Repository ID: 9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C

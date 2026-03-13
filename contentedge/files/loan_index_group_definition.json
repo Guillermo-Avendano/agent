@@ -1,0 +1,40 @@
+{
+  "id": "API_Loan_inx",
+  "name": "content_repoLoan Index Group",
+  "scope": "Line",
+  "topics": [
+    {
+      "id": "A_CUST_ID",
+      "name": "A_CUST_ID",
+      "details": "A_CUST_ID content_repotest",
+      "topicVersionDisplay": "All",
+      "allowAccess": true,
+      "dataType": "Character",
+      "maxLength": "30",
+      "category": "Document metadata",
+      "enableIndex": true
+    },
+    {
+      "id": "A_LOAN_ID",
+      "name": "A_LOAN_ID",
+      "details": "A_LOAN_ID content_repotest",
+      "topicVersionDisplay": "All",
+      "allowAccess": true,
+      "dataType": "Character",
+      "maxLength": "30",
+      "category": "Document metadata",
+      "enableIndex": true
+    },
+    {
+      "id": "A_REQ_DATE",
+      "name": "A_REQ_DATE",
+      "details": "A_REQ_DATE content_repotest",
+      "topicVersionDisplay": "All",
+      "allowAccess": true,
+      "dataType": "Character",
+      "maxLength": "30",
+      "category": "Document metadata",
+      "enableIndex": true
+    }    
+  ]
+}

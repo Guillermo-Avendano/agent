@@ -47,7 +47,7 @@ class OpenAIChatMessage(BaseModel):
 
 
 class OpenAIChatRequest(BaseModel):
-    model: str = Field(default="sql-agent")
+    model: str = Field(default="guille-agent")
     messages: list[OpenAIChatMessage] = Field(..., min_length=1)
     temperature: float = Field(default=0.0)
     max_tokens: int | None = Field(default=None)
@@ -70,7 +70,7 @@ class OpenAIChatResponse(BaseModel):
     id: str
     object: str = "chat.completion"
     created: int
-    model: str = "sql-agent"
+    model: str = "guille-agent"
     choices: list[OpenAIChatChoice]
     usage: OpenAIUsage = OpenAIUsage()
 
@@ -79,7 +79,7 @@ class OpenAIModel(BaseModel):
     id: str
     object: str = "model"
     created: int = 0
-    owned_by: str = "sql-agent"
+    owned_by: str = "guille-agent"
 
 
 class OpenAIModelList(BaseModel):

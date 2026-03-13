@@ -85,6 +85,19 @@ def load_files_for_memory() -> int:
     collection = settings.qdrant_collection
     ensure_collection(client, collection)
 
+    # Remove previously indexed document chunks to avoid duplicates on restart
+    try:
+        from qdrant_client.models import Filter, FieldCondition, MatchValue
+        client.delete(
+            collection_name=collection,
+            points_selector=Filter(
+                must=[FieldCondition(key="type", match=MatchValue(value="document"))]
+            ),
+        )
+        logger.info("file_loader.cleaned_previous_documents")
+    except Exception as e:
+        logger.warning("file_loader.cleanup_error", error=str(e))
+
     total = 0
     for fpath in sorted(supported):
         reader_fn = _READERS[fpath.suffix.lower()]

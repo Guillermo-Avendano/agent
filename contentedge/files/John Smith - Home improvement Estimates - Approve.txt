@@ -1,0 +1,26 @@
+# Home Improvement Estimates for John Smith
+
+## Project Overview:
+
+### 1. Roof Repairs:
+   - Replace damaged shingles
+   - Repair any leaks
+   - Estimated Cost: $10,000
+
+### 2. Kitchen Renovation:
+   - Upgrade appliances
+   - Install new countertops
+   - Estimated Cost: $20,000
+
+### 3. Bathroom Remodeling:
+   - Install new fixtures
+   - Upgrade flooring
+   - Estimated Cost: $15,000
+
+### 4. Exterior Painting:
+   - Repaint the house exterior
+   - Repair any damaged siding
+   - Estimated Cost: $5,000
+
+## Total Estimated Cost: $50,000
+

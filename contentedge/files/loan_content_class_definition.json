@@ -1,0 +1,21 @@
+{
+  "compress": true,
+  "encrypt": false,
+  "deleteExpiredAuto": false,
+  "type": 7,
+  "description": "",
+  "details": "Note that %REPORTID% gets truncated to 8 characters.\nUse %REPORTID.10% to get the entire report ID.\nAlso, in general, avoid using relative paths.",
+  "ocrProcessing": true,
+  "template": "/mnt/efs%PATHDELIM%%REPORTID%%PATHDELIM%%ARCHIVEDATE%%PATHDELIM%%ARCHIVETIME%%UNIQUE.2%.DAF",
+  "retentionType": "No retention",
+  "retentionBased": "Report version ID",
+  "enableMetadataIndexing": true,
+  "enableContentIndexing": true,
+  "redactionType": "No Redaction",
+  "securityTopic": "",
+  "characterType": "PC ANSI",
+  "daysForRetention": null,
+  "daysForRetentionWithInitialFixedPeriod": null,
+  "id": "TEST_LOAN",
+  "name": "Loan API Demo"
+}

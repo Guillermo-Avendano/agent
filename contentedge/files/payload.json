@@ -1,0 +1,215 @@
+{
+    "conjunction": "AND",
+    "constraints": [
+        {
+            "operator": "CT",
+            "value": "ELECTR"
+        }
+    ],
+    "items": [
+        {
+            "contentId": "ENC(OC5yZXBvcnRpZDEwLkFDMjAyMCAgICA5LnJlcG9ydHZlcjE0LjIwMjIwOTEyMDAwMDAwMTAucmVwb3NpdG9yeTgudmRybmV0ZHMxMC5mb2xkZXJUeXBlMTcudmRyOnJlcG9ydFZlcnNpb24xMi5yZXBvc2l0b3J5aWQzNi45Q0UyNjRFNi1ERjE3LTRGNjMtQTRDNy04NEU0MENDQUFDOUM5LnNpZ25hdHVyZTQzLi1ib2tZWVhCcEVSaEs3a3VQeUczMGdzbU5RUElMZmxMeUxqWGpUSGdKZ2MxNi50Y2ljcnlwdG92ZXJzaW9uMy44LjA)",
+            "pageCount": 0,
+            "startingPageNumber": 1
+        },
+        {
+            "contentId": "ENC(OC5yZXBvcnRpZDEwLkFDMjAyMCAgICA5LnJlcG9ydHZlcjE0LjIwMjIwODE0MDAwMDAwMTAucmVwb3NpdG9yeTgudmRybmV0ZHMxMC5mb2xkZXJUeXBlMTcudmRyOnJlcG9ydFZlcnNpb24xMi5yZXBvc2l0b3J5aWQzNi45Q0UyNjRFNi1ERjE3LTRGNjMtQTRDNy04NEU0MENDQUFDOUM5LnNpZ25hdHVyZTQzLlNZMnZOT19Tenl1TkFlbFk2TG5qS01MVjAzeFgyYkpYbndpRmhRclE1MVExNi50Y2ljcnlwdG92ZXJzaW9uMy44LjA)",
+            "pageCount": 0,
+            "startingPageNumber": 1
+        }
+    ],
+    "removeSpaces": "C",
+    "unredacted": true,
+    "selectedView": "sxsTreeDetail",
+    "treeViewDetailGridLineageData": [
+        {
+            "self": null,
+            "links": [
+                {
+                    "rel": "http://www/asg/com/mobius/rel/children",
+                    "href": "/mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/children",
+                    "method": "GET"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/capabilities",
+                    "href": "/mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/capabilities",
+                    "method": "GET"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/favorites/children",
+                    "href": "/mobius/rest/favorites/children",
+                    "method": "GET"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/imports",
+                    "href": "/mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/imports",
+                    "method": "POST"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/passwords",
+                    "href": "/mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/passwords",
+                    "method": "PUT"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/searches/run",
+                    "href": "/mobius/rest/searches?returnresults=true&count=200",
+                    "method": "POST"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/searches/get",
+                    "href": "/mobius/rest/savedsearches",
+                    "method": "GET"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/indexes",
+                    "href": "/mobius/rest/indexes",
+                    "method": "GET"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/getobjecttypes",
+                    "href": "/mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/objecttypes",
+                    "method": "GET"
+                },
+                {
+                    "rel": "http://www/asg/com/mobius/rel/archivingwrite",
+                    "href": "/mobius/rest/repositories/9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C/documents",
+                    "method": "POST"
+                }
+            ],
+            "data": {
+                "name": "Mobius",
+                "repositoryId": "9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C",
+                "supportsPasswordChange": false,
+                "archiveWriteEnabled": true,
+                "indexUpdateEnabled": true,
+                "folderServerEnabled": false,
+                "builtInFoldersEnabled": false,
+                "recordsManagementEnabled": false,
+                "repositoryType": "VDR",
+                "allowPasswordChanges": false,
+                "searchable": true,
+                "navigable": true,
+                "clientBrowseEnabled": true,
+                "mvsPasswordExpiryMessage": "PASSWORD IS EXPIRED",
+                "groupId": null
+            },
+            "name": "MobiusUiRepositoryResource"
+        },
+        {
+            "self": null,
+            "links": [
+                {
+                    "rel": "http://www/asg/com/mobius/rel/children",
+                    "href": "/mobius/rest/folders/ENC(MTAuZm9sZGVyVHlwZTE0LnZkcjpyZXBvcnRSb290MTAucmVwb3NpdG9yeTgudmRybmV0ZHMxMi5yZXBvc2l0b3J5aWQzNi45Q0UyNjRFNi1ERjE3LTRGNjMtQTRDNy04NEU0MENDQUFDOUM5LnNpZ25hdHVyZTQzLlB3eWZiUUt4U0gyTTJZbVZrbFlIdm0zNlM3ajVaN01yVWZ6RHdOWEJ1LWMxNi50Y2ljcnlwdG92ZXJzaW9uMy44LjA)/children",
+                    "method": "GET"
+                }
+            ],
+            "data": {
+                "name": "Content Classes",
+                "description": "",
+                "objectId": "ENC(MTAuZm9sZGVyVHlwZTE0LnZkcjpyZXBvcnRSb290MTAucmVwb3NpdG9yeTgudmRybmV0ZHMxMi5yZXBvc2l0b3J5aWQzNi45Q0UyNjRFNi1ERjE3LTRGNjMtQTRDNy04NEU0MENDQUFDOUM5LnNpZ25hdHVyZTQzLlB3eWZiUUt4U0gyTTJZbVZrbFlIdm0zNlM3ajVaN01yVWZ6RHdOWEJ1LWMxNi50Y2ljcnlwdG92ZXJzaW9uMy44LjA)",
+                "objectTypeId": "vdr:reportRoot",
+                "baseTypeId": "FOLDER",
+                "parentId": "ENC(MTAuZm9sZGVyVHlwZTQucm9vdDEwLnJlcG9zaXRvcnk4LnZkcm5ldGRzMTIucmVwb3NpdG9yeWlkMzYuOUNFMjY0RTYtREYxNy00RjYzLUE0QzctODRFNDBDQ0FBQzlDOS5zaWduYXR1cmU0My5XTEV1VTNpdnA2TDNSSGh1ZEZVVlRsSFV5aDRxZURub3RrdXdmenNVaVFBMTYudGNpY3J5cHRvdmVyc2lvbjMuOC4w)",
+                "path": "/Content Classes",
+                "pageCount": null,
+                "parentRef": null,
+                "items": null,
+                "metadata": [
+                    {
+                        "dataType": "String",
+                        "displayName": "RedactionType",
+                        "keyName": "RedactionType",
+                        "keyValue": "NONE",
+                        "keyType": "info",
+                        "keyOrdinal": 0
+                    }
+                ],
+                "repositoryId": "9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C"
+            },
+            "name": "MobiusUiRepositoryItemResource"
+        },
+        {
+            "self": null,
+            "links": [
+                {
+                    "rel": "http://www/asg/com/mobius/rel/children",
+                    "href": "/mobius/rest/folders/ENC(OC5yZXBvcnRpZDEwLkFDMjAyMCAgICAxMC5yZXBvc2l0b3J5OC52ZHJuZXRkczEwLmZvbGRlclR5cGUxMC52ZHI6cmVwb3J0MTIucmVwb3NpdG9yeWlkMzYuOUNFMjY0RTYtREYxNy00RjYzLUE0QzctODRFNDBDQ0FBQzlDOS5zaWduYXR1cmU0My5ueFFMb24zVnBJbUxmX3lvZk5venktWER1Z0J5cDMwa1VBVkJVQmN2Zml3MTYudGNpY3J5cHRvdmVyc2lvbjMuOC4w)/children",
+                    "method": "GET"
+                }
+            ],
+            "data": {
+                "name": "AC2020    ",
+                "description": "Text Report - Small sample with Archiving Policy",
+                "objectId": "ENC(OC5yZXBvcnRpZDEwLkFDMjAyMCAgICAxMC5yZXBvc2l0b3J5OC52ZHJuZXRkczEwLmZvbGRlclR5cGUxMC52ZHI6cmVwb3J0MTIucmVwb3NpdG9yeWlkMzYuOUNFMjY0RTYtREYxNy00RjYzLUE0QzctODRFNDBDQ0FBQzlDOS5zaWduYXR1cmU0My5ueFFMb24zVnBJbUxmX3lvZk5venktWER1Z0J5cDMwa1VBVkJVQmN2Zml3MTYudGNpY3J5cHRvdmVyc2lvbjMuOC4w)",
+                "objectTypeId": "vdr:report",
+                "baseTypeId": "FOLDER",
+                "parentId": "ENC(MTAuZm9sZGVyVHlwZTE0LnZkcjpyZXBvcnRSb290MTAucmVwb3NpdG9yeTgudmRybmV0ZHMxMi5yZXBvc2l0b3J5aWQzNi45Q0UyNjRFNi1ERjE3LTRGNjMtQTRDNy04NEU0MENDQUFDOUM5LnNpZ25hdHVyZTQzLlB3eWZiUUt4U0gyTTJZbVZrbFlIdm0zNlM3ajVaN01yVWZ6RHdOWEJ1LWMxNi50Y2ljcnlwdG92ZXJzaW9uMy44LjA)",
+                "path": "/Content Classes/AC2020    ",
+                "pageCount": null,
+                "parentRef": null,
+                "items": null,
+                "metadata": [
+                    {
+                        "dataType": "String",
+                        "displayName": "Report ID",
+                        "keyName": "ReportID",
+                        "keyValue": "AC2020    ",
+                        "keyType": "document",
+                        "keyOrdinal": 0
+                    },
+                    {
+                        "dataType": "String",
+                        "displayName": "ReportName",
+                        "keyName": "ReportName",
+                        "keyValue": "Text Report - Small sample with Archiving Policy",
+                        "keyType": "info",
+                        "keyOrdinal": 0
+                    },
+                    {
+                        "dataType": "String",
+                        "displayName": "RedactionType",
+                        "keyName": "RedactionType",
+                        "keyValue": "NONE",
+                        "keyType": "info",
+                        "keyOrdinal": 0
+                    }
+                ],
+                "repositoryId": "9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C"
+            },
+            "name": "MobiusUiRepositoryItemResource"
+        }
+    ],
+    "selectedContentListItems": [
+        {
+            "selected": true,
+            "data": {
+                "name": "Sep 12, 2022 12:00:00 AM",
+                "description": "",
+                "type": 444,
+                "baseTypeId": "FOLDER",
+                "isFolder": true,
+                "isDocument": false,
+                "objectId": "ENC(OC5yZXBvcnRpZDEwLkFDMjAyMCAgICA5LnJlcG9ydHZlcjE0LjIwMjIwOTEyMDAwMDAwMTAucmVwb3NpdG9yeTgudmRybmV0ZHMxMC5mb2xkZXJUeXBlMTcudmRyOnJlcG9ydFZlcnNpb24xMi5yZXBvc2l0b3J5aWQzNi45Q0UyNjRFNi1ERjE3LTRGNjMtQTRDNy04NEU0MENDQUFDOUM5LnNpZ25hdHVyZTQzLi1ib2tZWVhCcEVSaEs3a3VQeUczMGdzbU5RUElMZmxMeUxqWGpUSGdKZ2MxNi50Y2ljcnlwdG92ZXJzaW9uMy44LjA)",
+                "objectTypeId": "vdr:reportVersion",
+                "repositoryId": "9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C"
+            },
+            "toolbarItems": []
+        },
+        {
+            "selected": true,
+            "data": {
+                "name": "Aug 14, 2022 12:00:00 AM",
+                "description": "",
+                "type": 444,
+                "baseTypeId": "FOLDER",
+                "isFolder": true,
+                "isDocument": false,
+                "objectId": "ENC(OC5yZXBvcnRpZDEwLkFDMjAyMCAgICA5LnJlcG9ydHZlcjE0LjIwMjIwODE0MDAwMDAwMTAucmVwb3NpdG9yeTgudmRybmV0ZHMxMC5mb2xkZXJUeXBlMTcudmRyOnJlcG9ydFZlcnNpb24xMi5yZXBvc2l0b3J5aWQzNi45Q0UyNjRFNi1ERjE3LTRGNjMtQTRDNy04NEU0MENDQUFDOUM5LnNpZ25hdHVyZTQzLlNZMnZOT19Tenl1TkFlbFk2TG5qS01MVjAzeFgyYkpYbndpRmhRclE1MVExNi50Y2ljcnlwdG92ZXJzaW9uMy44LjA)",
+                "objectTypeId": "vdr:reportVersion",
+                "repositoryId": "9CE264E6-DF17-4F63-A4C7-84E40CCAAC9C"
+            },
+            "toolbarItems": []
+        }
+    ]
+}

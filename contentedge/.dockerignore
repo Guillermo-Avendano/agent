@@ -1,0 +1,8 @@
+old/
+doc/
+conf/_cache/
+__pycache__/
+*.pyc
+*.db
+*.md5
+test_*.py

@@ -1,0 +1,337 @@
+08/14/2008                                                                                                    PAGE    1
+     REPORT ID: AC001                                      MONTHLY EXPENSE
+    DEPARTMENT: SALE   SALES
+        REGION: EA     EASTERN
+        OFFICE: NWK    NEWARK, NEW JERSEY
+
+ACCT   ACCT                              PLANNED       ACTUAL       VARIANCE      PLANNED        ACTUAL       VARIANCE
+CODE   DESCRIPTION                         MTD          MTD            MTD           YTD           YTD           YTD
+------ ------------------------------   ---------     ---------     ---------     ---------     ---------     ---------
+805001 ADMINISTRATIVE                       1,479         2,637         1,158        14,279        25,857        11,578
+
+810001 ADVERTISING                            984         1,754           770         9,499        17,202         7,702
+
+812501 BOOKS & SUBSCRIPTIONS                   14            25            11           135           245           110
+
+820001 DATA PROCESSING                      1,291         2,301         1,010        12,456        22,556        10,100
+
+830001 ELECTRICITY                          1,840         3,280         1,440        17,762        32,164        14,402
+
+835000 EMPLOYEE BENEFITS                    1,840         3,280         1,440        17,762        32,164        14,402
+
+840001 EQUIPMENT RENTALS                      951         1,696           744         9,182        16,627         7,445
+
+845001 FOOD, TRAVEL & LODGING                 497           886           389         4,800         8,691         3,892
+
+860001 OFFICE SUPPLIES                         23            42            18           226           410           184
+
+865001 POSTAGE, FREIGHT, ETC.                 699         1,246           547         6,749        12,221         5,472
+
+870001 PRINTING                                46            82            36           446           808           362
+
+875001 PROFESSIONAL FEES AND DUES              39            70            31           377           683           306
+
+880001 PROMOTIONAL                             75           134            59           724         1,311           587
+
+890001 REPRODUCTION                           115           205            90         1,112         2,014           902
+
+895001 SALARIES AND WAGES                     500           892           392         4,831         8,748         3,917
+
+900001 SUNDRY                                  63           113            50           613         1,110           497
+
+905001 SUBCONTRACTORS                         247           441           194         2,389         4,326         1,937
+
+935001 TELEPHONE & TELEGRAPH                  477           851           374         4,609         8,346         3,737
+
+980001 RENT                                   607         1,081           475         5,854        10,601         4,747
+
+
+
+                                        ---------     ---------     ---------     ---------     ---------     ---------
+         OFFICE TOTAL:                     11,791        21,018         9,228       113,806       206,081        92,275
+08/14/2008                                                                                                    PAGE    2
+     REPORT ID: AC001                                      MONTHLY EXPENSE
+    DEPARTMENT: SALE   SALES
+        REGION: EA     EASTERN
+        OFFICE: CHA    CHARLESTON, S. CAROLINA
+
+ACCT   ACCT                              PLANNED       ACTUAL       VARIANCE      PLANNED        ACTUAL       VARIANCE
+CODE   DESCRIPTION                         MTD          MTD           MTD           YTD           YTD           YTD
+------ ------------------------------   ---------     ---------     ---------     ---------     ---------     ---------
+805001 ADMINISTRATIVE                         494           880           386         4,764         8,627         3,863
+
+810001 ADVERTISING                            490           874           384         4,733         8,571         3,838
+
+812501 BOOKS & SUBSCRIPTIONS                    8            14             6            75           137            61
+
+820001 DATA PROCESSING                        978         1,743           765         9,439        17,093         7,654
+
+830001 ELECTRICITY                          2,271         4,048         1,777        21,918        39,689        17,771
+
+835000 EMPLOYEE BENEFITS                    1,505         2,683         1,178        14,525        26,303        11,777
+
+840001 EQUIPMENT RENTALS                      719         1,281           563         6,938        12,563         5,625
+
+845001 FOOD, TRAVEL & LODGING                 311           555           244         3,006         5,443         2,437
+
+860001 OFFICE SUPPLIES                         11            20             9           109           197            88
+
+865001 POSTAGE, FREIGHT, ETC.                 564         1,005           441         5,441         9,853         4,412
+
+870001 PRINTING                                43            77            34           415           752           337
+
+875001 PROFESSIONAL FEES & DUES                 8            14             6            75           137            61
+
+880001 PROMOTIONAL                             59           105            46           568         1,029           461
+
+890001 REPRODUCTION                           201           358           157         1,936         3,505         1,570
+
+895001 SALARIES & WAGES                     1,229         2,190           962        11,859        21,475         9,616
+
+905001 SUBCONTRACTORS                         206           367           161         1,987         3,598         1,611
+
+900001 SUNDRY                                  10            18             8            95           173            77
+
+935001 TELEPHONE & TELEGRAPH                1,075         1,916           841        10,372        18,781         8,410
+
+980001 RENT                                   636         1,134           498         6,138        11,115         4,977
+
+
+
+                                        ---------     ---------     ---------     ---------     ---------     ---------
+         OFFICE TOTAL:                     10,816        19,280         8,465       104,396       189,041        84,645
+
+         REGION TOTAL:                     22,606        40,298        17,692       218,202       395,122       176,920
+08/14/2008                                                                                                    PAGE    3
+     REPORT ID: AC001                                      MONTHLY EXPENSE
+    DEPARTMENT: SALE   SALES
+        REGION: CE     CENTRAL
+        OFFICE: CHI    CHICAGO, ILLINOIS
+
+ACCT   ACCT                             PLANNED        ACTUAL       VARIANCE      PLANNED        ACTUAL       VARIANCE
+CODE   DESCRIPTION                        MTD           MTD           MTD           YTD           YTD           YTD
+------ ------------------------------   ---------     ---------     ---------     ---------     ---------     ---------
+805001 ADMINISTRATIVE                         994         1,772           778         9,597        17,378         7,781
+
+810001 ADVERTISING                          1,038         1,850           812        10,017        18,138         8,122
+
+812501 BOOKS & SUBSCRIPTIONS                    7            13             6            69           125            56
+
+820001 DATA PROCESSING                      1,061         1,892           831        10,245        18,552         8,307
+
+830001 ELECTRICITY                          1,771         3,156         1,386        17,090        30,946        13,856
+
+835000 EMPLOYEE BENEFITS                    1,505         2,683         1,178        14,525        26,303        11,777
+
+840001 EQUIPMENT RENTALS                    1,249         2,227           978        12,059        21,837         9,778
+
+845001 FOOD, TRAVEL AND LODGING               745         1,329           583         7,195        13,029         5,834
+
+860001 OFFICE SUPPLIES                        150           268           118         1,452         2,629         1,177
+
+865001 POSTAGE, FREIGHT, ETC.                 992         1,768           776         9,573        17,334         7,762
+
+870001 PRINTING                                99           177            78           959         1,737           778
+
+875001 PROFESSIONAL FEES & DUES                49            88            39           475           860           385
+
+880001 PROMOTIONAL                             99           177            78           959         1,737           778
+
+890001 REPRODUCTION                           110           196            86         1,061         1,922           860
+
+895001 SALARIES & WAGES                     1,504         2,681         1,177        14,514        26,283        11,768
+
+905001 SUBCONTRACTORS                         330           588           258         3,181         5,761         2,579
+
+900001 SUNDRY                                  74           132            58           713         1,290           578
+
+935001 TELEPHONE & TELEGRAPH                  794         1,415           621         7,661        13,873         6,212
+
+980001 RENT                                   745         1,329           583         7,195        13,029         5,834
+
+
+
+                                        ---------     ---------     ---------     ---------     ---------     ---------
+         OFFICE TOTAL:                     13,317        23,739        10,422       128,540       232,762       104,222
+
+         REGION TOTAL:                     13,317        23,739        10,422       128,540       232,762       104,222
+08/14/2008                                                                                                    PAGE    4
+     REPORT ID: AC001                                      MONTHLY EXPENSE
+    DEPARTMENT: SALE   SALES
+        REGION: WE     WESTERN
+        OFFICE: SF     SAN FRANCISCO, CALIFORNIA
+
+ACCT   ACCT                             PLANNED        ACTUAL       VARIANCE      PLANNED        ACTUAL       VARIANCE
+CODE   DESCRIPTION                        MTD           MTD           MTD           YTD           YTD           YTD
+------ ------------------------------   ---------     ---------     ---------     ---------     ---------     ---------
+805001 ADMINISTRATIVE                       1,249         2,227           978        12,059        21,837         9,778
+
+810001 ADVERTISING                          1,249         2,227           978        12,057        21,833         9,776
+
+821501 BOOKS & SUBSCRIPTIONS                   79           141            62           766         1,387           621
+
+820001 DATA PROCESSING                      1,498         2,670         1,172        14,459        26,182        11,723
+
+830001 ELECTRICITY                          1,498         2,670         1,172        14,457        26,178        11,722
+
+835000 EMPLOYEE BENEFITS                      994         1,772           778         9,593        17,370         7,778
+
+840001 EQUIPMENT RENTALS                    1,245         2,219           974        12,017        21,760         9,743
+
+845001 FOOD, TRAVEL & LODGING                 948         1,690           742         9,153        16,574         7,421
+
+860001 OFFICE SUPPLIES                         28            50            22           269           486           218
+
+865001 POSTAGE, FREIGHT, ETC.                 992         1,768           776         9,573        17,334         7,762
+
+870001 PRINTING                                99           177            78           957         1,733           776
+
+875001 PROFESSIONAL FEES & DUES                30            54            24           293           531           238
+
+880001 PROMOTIONAL                            101           180            79           975         1,765           790
+
+890001 REPRODUCTION                           115           204            90         1,106         2,002           896
+
+895001 SALARIES & WAGES                     1,246         2,221           975        12,024        21,772         9,749
+
+905001 SUBCONTRACTORS                         431           769           338         4,163         7,538         3,375
+
+900001 SUNDRY                                  46            81            36           440           796           356
+
+935001 TELEPHONE & TELEGRAPH                  876         1,562           686         8,456        15,312         6,856
+
+980001 RENT                                   871         1,553           682         8,412        15,232         6,820
+
+
+
+                                        ---------     ---------     ---------     ---------     ---------     ---------
+         OFFICE TOTAL:                     13,595        24,235        10,640       131,224       237,622       106,398
+
+         REGION TOTAL:                     13,595        24,235        10,640       131,224       237,622       106,398
+
+         DEPARTMENT TOTAL:                 49,519        88,273        38,754       477,966       865,506       387,540
+08/14/2008                                                                                                    PAGE    5
+     REPORT ID: AC001                                      MONTHLY EXPENSE
+    DEPARTMENT: MANU   MANUFACTURING
+        REGION: EA     EASTERN
+        OFFICE: NWK    NEWARK, NEW JERSEY
+
+ACCT   ACCT                             PLANNED        ACTUAL       VARIANCE      PLANNED        ACTUAL       VARIANCE
+CODE   DESCRIPTION                        MTD           MTD           MTD           YTD           YTD           YTD
+------ ------------------------------   ---------     ---------     ---------     ---------     ---------     ---------
+820001 DATA PROCESSING                      1,710         3,048         1,338        16,501        29,881        13,379
+
+830001 ELECTRICITY                          2,024         3,607         1,584        19,532        35,368        15,836
+
+835000 EMPLOYEE BENEFITS                    2,935         5,231         2,297        28,325        51,291        22,966
+
+840001 EQUIPMENT RENTALS                      797         1,421           624         7,697        13,937         6,241
+
+860001 OFFICE SUPPLIES                         99           177            78           959         1,737           778
+
+865001 POSTAGE, FREIGHT, ETC.               1,506         2,685         1,179        14,537        26,323        11,786
+
+890001 REPRODUCTION                           201           358           157         1,938         3,509         1,571
+
+895001 SALARIES & WAGES                     3,358         5,985         2,628        32,408        58,684        26,276
+
+905001 SUBCONTRACTORS                       1,045         1,862           818        10,083        18,259         8,176
+
+935001 TELEPHONE & TELEGRAPH                  996         1,775           779         9,610        17,403         7,792
+
+950001 RAW MATERIALS                        3,312         5,903         2,592        31,964        57,880        25,916
+
+960001 DEPRECIATION                         1,247         2,223           976        12,035        21,792         9,758
+
+970001 MACHINE TOOL CONSUMABLES               917         1,635           718         8,851        16,028         7,177
+
+980001 RENT                                 1,055         1,881           826        10,188        18,448         8,260
+
+
+
+                                        ---------     ---------     ---------     ---------     ---------     ---------
+         OFFICE TOTAL:                     21,200        37,791        16,591       204,626       370,539       165,913
+08/14/2008                                                                                                    PAGE    6
+     REPORT ID: AC001                                      MONTHLY EXPENSE
+    DEPARTMENT: MANU   MANUFACTURING
+        REGION: EA     EASTERN
+        OFFICE: OAK    OAK RIDGE, TENNESEE
+
+ACCT   ACCT                             PLANNED        ACTUAL       VARIANCE      PLANNED        ACTUAL       VARIANCE
+CODE   DESCRIPTION                        MTD           MTD           MTD           YTD           YTD           YTD
+------ ------------------------------   ---------     ---------     ---------     ---------     ---------     ---------
+820001 DATA PROCESSING                        740         1,319           579         7,140        12,928         5,789
+
+830001 ELECTRICITY                          1,555         2,773         1,217        15,014        27,187        12,173
+
+835000 EMPLOYEE BENEFITS                    1,757         3,132         1,375        16,956        30,705        13,748
+
+840001 EQUIPMENT RENTALS                      559           997           438         5,397         9,773         4,376
+
+860001 OFFICE SUPPLIES                        150           268           118         1,452         2,629         1,177
+
+865001 POSTAGE, FREIGHT, ETC.                 992         1,769           777         9,577        17,342         7,765
+
+895001 SALARIES & WAGES                     1,809         3,225         1,416        17,460        31,617        14,157
+
+905001 SUBCONTRACTORS                       1,505         2,683         1,178        14,525        26,303        11,777
+
+935001 TELEPHONE & TELEGRAPH                  329           587           258         3,177         5,753         2,576
+
+950001 RAW MATERIALS                        2,501         4,459         1,958        24,145        43,722        19,577
+
+960001 DEPRECIATION                         1,850         3,298         1,448        17,860        32,341        14,481
+
+970001 MACHINE TOOL CONSUMABLES             1,049         1,870           821        10,128        18,339         8,212
+
+980001 RENT                                 1,001         1,784           783         9,661        17,495         7,834
+
+
+
+                                        ---------     ---------     ---------     ---------     ---------     ---------
+         OFFICE TOTAL:                     15,799        28,163        12,364       152,492       276,134       123,642
+
+         REGION TOTAL:                     36,999        65,954        28,956       357,118       646,673       289,555
+08/14/2008                                                                                                    PAGE    7
+     REPORT ID: AC001                                      MONTHLY EXPENSE
+    DEPARTMENT: MANU   MANUFACTURING
+        REGION: WE     WESTERN
+        OFFICE: REN    RENO, NEVADA
+
+ACCT   ACCT                             PLANNED        ACTUAL       VARIANCE      PLANNED        ACTUAL       VARIANCE
+CODE   DESCRIPTION                        MTD           MTD           MTD           YTD           YTD           YTD
+------ ------------------------------   ---------     ---------     ---------     ---------     ---------     ---------
+820001 DATA PROCESSING                      1,251         2,230           979        12,075        21,865         9,790
+
+830001 ELECTRICITY                          1,501         2,676         1,175        14,490        26,239        11,749
+
+835000 EMPLOYEE BENEFITS                    1,806         3,220         1,414        17,434        31,569        14,135
+
+840001 EQUIPMENT RENTALS                      992         1,769           777         9,577        17,342         7,765
+
+860001 OFFICE SUPPLIES                        104           186            82         1,006         1,821           815
+
+865001 POSTAGE, FREIGHT, ETC.                 286           510           224         2,764         5,005         2,241
+
+890001 REPRODUCTION                            99           177            78           959         1,737           778
+
+895001 SALARIES & WAGES                     1,505         2,683         1,178        14,528        26,307        11,779
+
+905001 SUBCONTRACTORS                         282           502           221         2,720         4,925         2,205
+
+935001 TELEPHONE & TELEGRAPH                  457           815           358         4,411         7,988         3,577
+
+950001 RAW MATERIALS                        2,757         4,915         2,158        26,611        48,188        21,577
+
+960001 DEPRECIATION                         2,020         3,601         1,581        19,498        35,308        15,809
+
+970001 MACHINE TOOL CONSUMABLES               564         1,006           442         5,446         9,861         4,415
+
+
+
+                                        ---------     ---------     ---------     ---------     ---------     ---------
+         OFFICE TOTAL:                     13,626        24,289        10,664       131,517       238,153       106,636
+
+         REGION TOTAL:                     13,626        24,289        10,664       131,517       238,153       106,636
+
+         DEPARTMENT TOTAL:                 50,624        90,243        39,619       488,635       884,826       396,191

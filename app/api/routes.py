@@ -1,4 +1,4 @@
-"""API routes for the SQL Agent."""
+"""API routes for the Guille Agent."""
 
 from pathlib import Path
 

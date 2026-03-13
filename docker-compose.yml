@@ -87,13 +87,47 @@ services:
       STORAGE_DIR: /app/server/storage
       LLM_PROVIDER: generic-openai
       GENERIC_OPEN_AI_BASE_PATH: http://agent-api:8000/v1
-      GENERIC_OPEN_AI_MODEL_PREF: sql-agent
+      GENERIC_OPEN_AI_MODEL_PREF: guille-agent
       GENERIC_OPEN_AI_TOKEN_LIMIT: 8192
       # No API key needed — leave empty
       GENERIC_OPEN_AI_API_KEY: sk-not-required
     depends_on:
       agent-api:
         condition: service_healthy
+
+  # ─── ContentEdge MCP Server ────────────────────────────────
+  contentedge-mcp:
+    build: ./contentedge
+    restart: unless-stopped
+    expose:
+      - "8001"
+    volumes:
+      - ./contentedge/files:/app/files
+      - ./contentedge/conf:/app/conf
+    environment:
+      MCP_TRANSPORT: sse
+      MCP_HOST: "0.0.0.0"
+      MCP_PORT: "8001"
+      CE_WORK_DIR: /app/files
+      # Source repository overrides (from .env)
+      CE_SOURCE_REPO_URL: ${CE_SOURCE_REPO_URL:-}
+      CE_SOURCE_REPO_NAME: ${CE_SOURCE_REPO_NAME:-}
+      CE_SOURCE_REPO_USER: ${CE_SOURCE_REPO_USER:-}
+      CE_SOURCE_REPO_PASS: ${CE_SOURCE_REPO_PASS:-}
+      CE_SOURCE_REPO_SERVER_USER: ${CE_SOURCE_REPO_SERVER_USER:-}
+      CE_SOURCE_REPO_SERVER_PASS: ${CE_SOURCE_REPO_SERVER_PASS:-}
+      # Target repository overrides (from .env)
+      CE_TARGET_REPO_URL: ${CE_TARGET_REPO_URL:-}
+      CE_TARGET_REPO_NAME: ${CE_TARGET_REPO_NAME:-}
+      CE_TARGET_REPO_USER: ${CE_TARGET_REPO_USER:-}
+      CE_TARGET_REPO_PASS: ${CE_TARGET_REPO_PASS:-}
+      CE_TARGET_REPO_SERVER_USER: ${CE_TARGET_REPO_SERVER_USER:-}
+      CE_TARGET_REPO_SERVER_PASS: ${CE_TARGET_REPO_SERVER_PASS:-}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8001/sse || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   pgdata:

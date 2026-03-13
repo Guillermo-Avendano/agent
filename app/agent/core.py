@@ -26,6 +26,43 @@ def _get_llm() -> ChatOllama:
     )
 
 
+def _retrieve_document_context(question: str, top_k: int = 3) -> str:
+    """Retrieve relevant document chunks from Qdrant (type=document).
+
+    Searches files_for_memory content (PDFs, MD, TXT) using semantic similarity.
+    Returns matching text or empty string if nothing relevant found.
+    """
+    try:
+        from qdrant_client.models import Filter, FieldCondition, MatchValue
+        client = get_qdrant_client()
+        embeddings = get_embeddings()
+
+        query_vector = embeddings.embed_query(question)
+        results = client.query_points(
+            collection_name=settings.qdrant_collection,
+            query=query_vector,
+            query_filter=Filter(
+                must=[FieldCondition(key="type", match=MatchValue(value="document"))]
+            ),
+            limit=top_k,
+            with_payload=True,
+        )
+        if not results.points:
+            return ""
+        # Only include results with a reasonable similarity score
+        texts = []
+        for hit in results.points:
+            if hit.score >= 0.35:
+                source = hit.payload.get("source", "unknown")
+                texts.append(f"[Source: {source}]\n{hit.payload.get('text', '')}")
+        if texts:
+            logger.info("document_context.found", chunks=len(texts))
+        return "\n\n".join(texts)
+    except Exception as e:
+        logger.warning("document_context.error", error=str(e))
+        return ""
+
+
 def _retrieve_schema_context(question: str, top_k: int = 5) -> str:
     """Retrieve ALL schema table descriptions from Qdrant.
 
@@ -92,9 +129,17 @@ async def ask_agent(
     ctx_preview = schema_context[:200].replace("\n", " ")
     logger.info("  ├─ schema context retrieved", preview=ctx_preview)
 
+    # Retrieve relevant document context from Qdrant (files_for_memory)
+    doc_context = _retrieve_document_context(question)
+    if doc_context:
+        logger.info("  ├─ document context retrieved", length=len(doc_context))
+    else:
+        logger.info("  ├─ no document context matched")
+
     system_text = SYSTEM_PROMPT.format(
         schema_context=schema_context,
         max_rows=settings.max_query_rows,
+        document_context=doc_context,
     )
 
     # Build the agent

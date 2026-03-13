@@ -36,7 +36,7 @@ async def list_models():
     """List available models (AnythingLLM calls this on setup)."""
     return OpenAIModelList(
         data=[
-            OpenAIModel(id="sql-agent", created=int(time.time())),
+            OpenAIModel(id="guille-agent", created=int(time.time())),
         ]
     )
 
@@ -46,7 +46,7 @@ async def chat_completions(
     request: OpenAIChatRequest,
     session: AsyncSession = Depends(get_session),
 ):
-    """OpenAI-compatible chat completions — routes through the SQL agent."""
+    """OpenAI-compatible chat completions — routes through the guille-agent."""
 
     # Extract the last user message as the question
     question = ""

@@ -1,0 +1,41 @@
+# Financial Statements for John Smith
+
+## Income Statement:
+
+### Annual Income:
+- **Salary (Employment):** $80,000
+
+### Monthly Expenses:
+- **Rent/Mortgage:** $1,500
+- **Utilities:** $200
+- **Food and Groceries:** $300
+- **Transportation:** $200
+- **Other Expenses:** $300
+
+### Net Monthly Income:
+- **Net Income:** $3,500 (Total Income - Total Expenses)
+
+## Balance Sheet:
+
+### Assets:
+- **Savings Account:** $20,000
+- **Investment Portfolio:** $30,000
+- **Real Estate (Collateral):** $200,000
+
+### Total Assets: $250,000
+
+### Liabilities:
+- **Outstanding Mortgage:** $120,000
+- **Credit Card Balances:** $5,000
+
+### Total Liabilities: $125,000
+
+### Net Worth (Assets - Liabilities): $125,000
+
+## Credit Report:
+
+- **Credit Score:** 720
+
+## Debt-to-Income Ratio:
+- **Debt-to-Income Ratio:** 36% (Total Monthly Debt Payments / Monthly Income)
+

@@ -1,0 +1,11 @@
+repository:
+  content_source_id: 8c22aaef-e978-40e6-859e-9de98fce555a
+  log_level: DEBUG
+  repo_id: 4485185F-EAF4-4237-AE53-48647DDBA01F
+  repo_id_enc: /mobius/adminrest/vdrrepositories/ENC(OGMyMmFhZWYtZTk3OC00MGU2LTg1OWUtOWRlOThmY2U1NTVhL3Zkcm5ldGRz)
+  repo_name: Mobius
+  repo_pass: admin
+  repo_server_pass: ''
+  repo_server_user: ADMIN
+  repo_url: https://services-us-virginia-m-1.skytap.com:12083
+  repo_user: admin
