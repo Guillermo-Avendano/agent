@@ -88,9 +88,25 @@ async def ask_agent(
     # Extract the final answer
     final_messages = result.get("messages", [])
     answer = ""
+
+    # Debug: log all message types to diagnose extraction
+    for i, msg in enumerate(final_messages):
+        logger.info(
+            "agent.message",
+            idx=i,
+            type=type(msg).__name__,
+            has_content=bool(getattr(msg, "content", None)),
+            content_preview=str(getattr(msg, "content", ""))[:120],
+            tool_calls=bool(getattr(msg, "tool_calls", None)),
+        )
+
     for msg in reversed(final_messages):
-        if hasattr(msg, "content") and msg.content and not getattr(msg, "tool_calls", None):
-            answer = msg.content
+        # Skip tool result messages
+        if type(msg).__name__ == "ToolMessage":
+            continue
+        content = getattr(msg, "content", None)
+        if content and not getattr(msg, "tool_calls", None):
+            answer = content if isinstance(content, str) else str(content)
             break
 
     # Check for chart output
