@@ -101,10 +101,7 @@ def _init_configs():
 # ---------------------------------------------------------------------------
 source_config = _init_configs()
 
-mcp = FastMCP(
-    "ContentEdge",
-    description="MCP server for Mobius Content Repository operations",
-)
+mcp = FastMCP("ContentEdge")
 
 
 # ---------------------------------------------------------------------------
