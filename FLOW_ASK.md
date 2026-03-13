@@ -108,9 +108,9 @@ ask_agent(question, session, chat_history)
    │  │ PASO 5: Crear agente ReAct                      │
    │  │                                                  │
    │  │ llm = ChatOllama(                               │
-   │  │     model = "llama3",                           │
+   │  │     model = "gpt-oss",                          │
    │  │     temperature = 0,         ← determinístico   │
-   │  │     base_url = "http://ollama:11434"            │
+   │  │     base_url = "http://192.168.0.92:11434"      │
    │  │ )                                               │
    │  │                                                  │
    │  │ agent = create_react_agent(                     │

@@ -1,4 +1,4 @@
-# FLOW_MEMORY — Memoria y RAG (Retrieval-Augmented Generation)
+# FLOW_MEMORY — Memoria y RAG (Guille-Agent)
 
 ## Resumen
 
@@ -50,10 +50,18 @@ load_files_for_memory()                   ← memory/file_loader.py
    │
    ├─ Escanea /app/files_for_memory/
    │    Formatos soportados: .pdf, .txt, .md
+   │    Archivos actuales:
+   │      - guille_agent_documentation.md  (auto-conocimiento)
+   │      - contentedge_knowledge.md       (info ContentEdge)
+   │      - contentedge-unlock-maximum-value-datasheet.pdf
    │
    ├─ client = get_qdrant_client()
    ├─ embeddings = get_embeddings()        ← OllamaEmbeddings(nomic-embed-text)
    ├─ ensure_collection("schema_memory")
+   │
+   ├─ **DEDUP**: Elimina chunks anteriores con type="document"
+   │    └─ client.delete(filter: type == "document")
+   │    └─ Evita duplicados en cada reinicio
    │
    ├─ Por cada archivo encontrado:
    │    │
