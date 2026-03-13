@@ -216,7 +216,7 @@ def list_indexes() -> str:
     Use the index ids as metadata key names when archiving documents.
 
     Returns:
-        JSON object with "index_groups" and "individual_indexes".
+        JSON object with "index_groups" and "individual_indexes" (only indexes not in any group).
     """
     tm = str(int(time.time() * 1000))
 
