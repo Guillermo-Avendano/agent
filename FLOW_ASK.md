@@ -78,15 +78,19 @@ ask_agent(question, session, chat_history)
    │  │     max_rows = settings.max_query_rows (1000)   │
    │  │ )                                               │
    │  │                                                  │
-   │  │ El prompt define 3 capacidades:                 │
+   │  │ El prompt define 5 capacidades:                 │
    │  │   1. SQL → execute_sql + generate_chart         │
    │  │   2. Web → web_search + fetch_webpage           │
    │  │   3. Conocimiento general → sin tools           │
+   │  │   4. ContentEdge → document context de Qdrant   │
+   │  │   5. Auto-conocimiento (Guille-Agent) → doc ctx │
    │  │                                                  │
    │  │ Y reglas de decisión:                           │
    │  │   - Datos en BD → execute_sql                   │
    │  │   - Gráfico → execute_sql + generate_chart      │
    │  │   - Info externa → web_search                   │
+   │  │   - ContentEdge → document context              │
+   │  │   - Sobre el agente → document context          │
    │  │   - Todo lo demás → responder directo           │
    │  └─────────────────────────────────────────────────┘
    │
@@ -160,7 +164,7 @@ por LangGraph. En cada iteración:
 ```
                     ┌───────────────────┐
                     │   LLM razona      │
-                    │   (Ollama llama3) │
+                    │   (Ollama gpt-oss)│
                     └────────┬──────────┘
                              │
                     ¿Necesita una herramienta?
@@ -197,6 +201,8 @@ por LangGraph. En cada iteración:
 | Datos en la BD | `execute_sql` | 2 (query + respuesta) |
 | Gráfico | `execute_sql` → `generate_chart` | 3 (query + chart + respuesta) |
 | Info externa | `web_search` [→ `fetch_webpage`] | 2-3 |
+| ContentEdge | — (usa document context de Qdrant) | 1 |
+| Sobre el agente | — (usa document context de Qdrant) | 1 |
 | Conversacional | — (responde directo) | 1 |
 
 ---
