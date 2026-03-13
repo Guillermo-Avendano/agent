@@ -229,7 +229,7 @@ por LangGraph. En cada iteración:
   "id": "chatcmpl-...",
   "object": "chat.completion",
   "created": 1710300000,
-  "model": "sql-agent",
+  "model": "guille-agent",
   "choices": [
     {
       "index": 0,
