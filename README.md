@@ -90,7 +90,8 @@ Los gráficos se sirven desde: `GET /charts/{filename}`
 | POST   | `/schema/load`  | Indexar descripciones de schema en Qdrant|
 | POST   | `/ask`          | Enviar pregunta al agente                |
 | GET    | `/charts/{file}`| Descargar un gráfico generado            |
-| GET    | `/docs`         | Documentación interactiva Swagger        |
+| GET    | `/v1/models`    | Lista modelos (devuelve "guille-agent")  |
+| POST   | `/v1/chat/completions` | Chat completions (AnythingLLM)  |
 
 ## Estructura del Proyecto
 
@@ -117,13 +118,20 @@ agent/
 │   │   └── executor.py         # Ejecución segura de queries
 │   ├── agent/
 │   │   ├── core.py             # Agente ReAct (LangChain + Ollama)
-│   │   ├── prompts.py          # System prompts
-│   │   └── tools.py            # Tools: execute_sql, generate_chart
+│   │   ├── prompts.py          # System prompts (5 capacidades)
+│   │   ├── tools.py            # Tools: execute_sql, generate_chart
+│   │   └── web_tools.py        # Tools: web_search, fetch_webpage
 │   ├── memory/
 │   │   ├── qdrant_store.py     # Cliente Qdrant + embed/search
-│   │   └── schema_loader.py    # Carga JSONs → Qdrant
+│   │   ├── schema_loader.py    # Carga JSONs → Qdrant
+│   │   └── file_loader.py      # Carga PDFs/TXT/MD → Qdrant (con dedup)
 │   └── charts/
 │       └── generator.py        # Generador Matplotlib
+├── contentedge/                 # ContentEdge MCP Server
+│   ├── mcp_server.py            # 6 MCP tools + health check
+│   ├── lib/                     # Python library para Content Repository
+│   ├── Dockerfile               # Imagen MCP server
+│   └── conf/                    # Configuración YAML del repositorio
 └── tests/
     ├── test_safety.py          # Tests de validación SQL
     └── test_charts.py          # Tests de generación de charts
