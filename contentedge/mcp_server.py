@@ -40,7 +40,6 @@ CONF_DIR = os.path.join(os.path.dirname(__file__), "conf")
 WORK_DIR = os.environ.get("CE_WORK_DIR", os.path.join(os.path.dirname(__file__), "files"))
 
 SOURCE_YAML = os.path.join(CONF_DIR, "repository_source.yaml")
-TARGET_YAML = os.path.join(CONF_DIR, "repository_target.yaml")
 
 
 def _patch_yaml_from_env(yaml_path: str, prefix: str) -> None:
@@ -85,9 +84,8 @@ def _patch_yaml_from_env(yaml_path: str, prefix: str) -> None:
 
 
 def _init_configs():
-    """Patch both YAML files from env vars, then build ContentConfig objects."""
+    """Patch source YAML from env vars, then build ContentConfig object."""
     _patch_yaml_from_env(SOURCE_YAML, "CE_SOURCE_")
-    _patch_yaml_from_env(TARGET_YAML, "CE_TARGET_")
 
     # Import ContentConfig after patching so __init__ reads final values
     from lib.content_config import ContentConfig
@@ -95,16 +93,13 @@ def _init_configs():
     source_cfg = ContentConfig(SOURCE_YAML)
     logger.info("Source repository: %s @ %s", source_cfg.repo_name, source_cfg.base_url)
 
-    target_cfg = ContentConfig(TARGET_YAML)
-    logger.info("Target repository: %s @ %s", target_cfg.repo_name, target_cfg.base_url)
-
-    return source_cfg, target_cfg
+    return source_cfg
 
 
 # ---------------------------------------------------------------------------
 # Boot
 # ---------------------------------------------------------------------------
-source_config, target_config = _init_configs()
+source_config = _init_configs()
 
 mcp = FastMCP(
     "ContentEdge",
