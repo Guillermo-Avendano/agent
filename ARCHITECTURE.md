@@ -1,4 +1,4 @@
-# Arquitectura y Flujo de Ejecución del Agente
+# Arquitectura y Flujo de Ejecución del Guille-Agent
 
 ## Visión General
 
@@ -8,12 +8,12 @@
 │  (chat UI)   │◂─────│   (Gateway)   │◂─────│  (LangGraph)    │
 └─────────────┘      └──────────────┘      └────────┬────────┘
                                                      │
-                              ┌───────────┬──────────┼──────────┬────────────┐
-                              ▼           ▼          ▼          ▼            ▼
-                         ┌─────────┐ ┌────────┐ ┌────────┐ ┌──────────┐ ┌──────────┐
-                         │PostgreSQL│ │Qdrant  │ │ Ollama │ │Browserless│ │Matplotlib│
-                         │  (datos) │ │(vector)│ │ (LLM)  │ │(web srch) │ │ (charts) │
-                         └─────────┘ └────────┘ └────────┘ └──────────┘ └──────────┘
+                              ┌───────────┬──────────┼──────────┬────────────┬─────────────┐
+                              ▼           ▼          ▼          ▼            ▼             ▼
+                         ┌─────────┐ ┌────────┐ ┌────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+                         │PostgreSQL│ │Qdrant  │ │ Ollama │ │Browserless│ │Matplotlib│ │ContentEdge│
+                         │  (datos) │ │(vector)│ │ (LLM)  │ │(web srch) │ │ (charts) │ │  (MCP)   │
+                         └─────────┘ └────────┘ └────────┘ └──────────┘ └──────────┘ └──────────┘
 ```
 
 ---
@@ -39,6 +39,7 @@ browserless ────────────────┘
 | **browserless** | 3000 (interno) | Chromium headless para web scraping |
 | **agent-api** | 8000 | API FastAPI — el cerebro del agente |
 | **anythingllm** | 3001 | Interfaz de chat web |
+| **contentedge-mcp** | 8001 | MCP server para Content Repository |
 
 ### 1.2 Inicio de la aplicación FastAPI
 
@@ -104,9 +105,10 @@ Usuario / AnythingLLM
 │  │                                                       │        │
 │  │  PASO 3                                               │        │
 │  │  Construye el SYSTEM_PROMPT                           │        │
-│  │  → Inyecta {schema_context} + {max_rows}             │        │
-│  │  → Incluye instrucciones de las 3 capacidades:        │        │
-│  │    SQL, Web Search, Conocimiento General              │        │
+│  │  → Inyecta {schema_context} + {document_context} + {max_rows}             │        │
+│  │  → Incluye instrucciones de las 5 capacidades:        │        │
+│  │    SQL, Web Search, Conocimiento General,             │        │
+│  │    ContentEdge, Auto-conocimiento (Guille-Agent)      │        │
 │  │                                                       │        │
 │  │  PASO 4                                               │        │
 │  │  Arma la lista de mensajes:                           │        │
@@ -243,6 +245,19 @@ Iteration 1:
 | `generate_chart` | `agent/tools.py` | Genera gráficos PNG con Matplotlib |
 | `web_search` | `agent/web_tools.py` | Busca en DuckDuckGo via Browserless |
 | `fetch_webpage` | `agent/web_tools.py` | Extrae texto de una URL específica |
+
+### ContentEdge MCP Tools (puerto 8001)
+
+| Tool | Descripción |
+|---|---|
+| `list_content_classes` | Lista Content Classes del repositorio |
+| `list_indexes` | Lista índices individuales y grupos de índices (mandatorios) |
+| `search_documents` | Busca documentos por valores de índices |
+| `archive_documents` | Archiva ficheros con metadata en Content Classes |
+| `retrieve_document` | Descarga documentos por objectId |
+| `get_versions` | Obtiene versiones de un reporte en un rango de fechas |
+
+> Todos los MCP tools verifican que el repositorio esté activo antes de ejecutar.
 
 ### execute_sql — Flujo interno
 
