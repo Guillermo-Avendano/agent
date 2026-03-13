@@ -15,6 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.connection import get_session
 from app.agent.core import ask_agent
+from app.config import settings
 from app.models.schemas import (
     OpenAIChatRequest,
     OpenAIChatResponse,
@@ -75,10 +76,22 @@ async def chat_completions(
             )
             answer = result["answer"]
 
-            # Append chart link if generated
+            # Replace internal container paths with accessible URLs
+            if "/app/charts_output/" in answer:
+                import re
+                base = settings.app_base_url.rstrip("/")
+                answer = re.sub(
+                    r'(?:file:///app/charts_output/|/app/charts_output/)([^\s\)]+)',
+                    rf'{base}/charts/\1',
+                    answer,
+                )
+
+            # Append chart link if generated and not already in the answer
             if result.get("chart_path"):
                 filename = result["chart_path"].split("/")[-1]
-                answer += f"\n\n📊 Chart: /charts/{filename}"
+                chart_url = f"{settings.app_base_url.rstrip('/')}/charts/{filename}"
+                if chart_url not in answer:
+                    answer += f"\n\n📊 [Ver gráfico]({chart_url})"
 
         except Exception as e:
             logger.error("openai_compat.error", error=str(e))

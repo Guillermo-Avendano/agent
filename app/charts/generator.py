@@ -67,6 +67,12 @@ def create_chart(
         supported = ", ".join(_CHART_BUILDERS.keys())
         raise ValueError(f"Unsupported chart type '{chart_type}'. Use: {supported}")
 
+    # Convert Decimal/object columns to numeric for plotting
+    df = df.copy()
+    for col in df.columns:
+        if col != x:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
     fig, ax = plt.subplots(figsize=(10, 6))
     builder(df, x, y or x, title, ax)
     plt.tight_layout()

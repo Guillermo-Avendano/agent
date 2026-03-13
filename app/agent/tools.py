@@ -1,8 +1,5 @@
 """LangChain tools exposed to the agent for SQL execution and charting."""
 
-import json
-import re
-
 import pandas as pd
 import structlog
 from langchain_core.tools import tool
@@ -57,45 +54,35 @@ async def execute_sql(query: str) -> str:
 
 
 @tool
-def generate_chart(spec_json: str) -> str:
+def generate_chart(chart_type: str, x: str, y: str, title: str = "Chart") -> str:
     """Generate a chart from the last SQL query results.
 
     Args:
-        spec_json: JSON string with keys: chart_type, x, y, title.
-            Example: {"chart_type": "bar", "x": "category", "y": "total_sales", "title": "Sales by Category"}
+        chart_type: Type of chart: bar, line, pie, scatter, or histogram.
+        x: Column name for the x-axis.
+        y: Column name for the y-axis.
+        title: Chart title.
     """
     global _last_dataframe
-    logger.info("  │  ▶ generate_chart called", spec=spec_json[:300])
+    logger.info("  │  ▶ generate_chart called", chart_type=chart_type,
+                x=x, y=y, title=title)
     if _last_dataframe is None or _last_dataframe.empty:
         logger.warning("  │  ✗ no dataframe available")
         return "Error: No data available. Execute a SQL query first."
-    try:
-        spec = json.loads(spec_json)
-    except json.JSONDecodeError:
-        # Try to extract JSON from markdown/text
-        match = re.search(r'\{.*\}', spec_json, re.DOTALL)
-        if match:
-            spec = json.loads(match.group())
-        else:
-            return "Error: Invalid JSON specification."
 
-    chart_type = spec.get("chart_type", "bar")
-    x_col = spec.get("x")
-    y_col = spec.get("y")
-    title = spec.get("title", "Chart")
-
-    if x_col not in _last_dataframe.columns:
-        return f"Error: Column '{x_col}' not found. Available: {list(_last_dataframe.columns)}"
-    if y_col and y_col not in _last_dataframe.columns:
-        return f"Error: Column '{y_col}' not found. Available: {list(_last_dataframe.columns)}"
+    if x not in _last_dataframe.columns:
+        return f"Error: Column '{x}' not found. Available: {list(_last_dataframe.columns)}"
+    if y and y not in _last_dataframe.columns:
+        return f"Error: Column '{y}' not found. Available: {list(_last_dataframe.columns)}"
 
     filepath = create_chart(
         df=_last_dataframe,
         chart_type=chart_type,
-        x=x_col,
-        y=y_col,
+        x=x,
+        y=y,
         title=title,
     )
+    logger.info("  │  ✓ chart created", path=filepath)
     return f"Chart saved to: {filepath}"
 
 

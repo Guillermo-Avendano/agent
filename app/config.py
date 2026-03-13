@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     # App
     app_host: str = Field(default="0.0.0.0")
     app_port: int = Field(default=8000)
+    app_base_url: str = Field(default="http://localhost:8000")
     log_level: str = Field(default="INFO")
     allowed_origins: str = Field(default="http://localhost:3000,http://localhost:8000")
     max_query_rows: int = Field(default=1000)

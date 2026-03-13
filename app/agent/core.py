@@ -27,9 +27,39 @@ def _get_llm() -> ChatOllama:
 
 
 def _retrieve_schema_context(question: str, top_k: int = 5) -> str:
-    """Search Qdrant for schema descriptions relevant to the question."""
+    """Retrieve ALL schema table descriptions from Qdrant.
+
+    Uses a payload filter to fetch every table_schema chunk so the LLM
+    always sees the full database structure regardless of the question.
+    Falls back to semantic search if the filter returns nothing.
+    """
     try:
+        from qdrant_client.models import Filter, FieldCondition, MatchValue
         client = get_qdrant_client()
+
+        # Fetch ALL schema chunks (not similarity-based)
+        schema_filter = Filter(
+            must=[FieldCondition(key="type", match=MatchValue(value="table_schema"))]
+        )
+        all_schema, _ = client.scroll(
+            collection_name=settings.qdrant_collection,
+            scroll_filter=schema_filter,
+            limit=100,
+            with_payload=True,
+        )
+        if all_schema:
+            # Deduplicate by table name
+            seen = set()
+            texts = []
+            for point in all_schema:
+                table = point.payload.get("table", "")
+                if table not in seen:
+                    seen.add(table)
+                    texts.append(point.payload.get("text", ""))
+            logger.info("schema_context.loaded", tables=list(seen))
+            return "\n\n".join(texts)
+
+        # Fallback to semantic search
         embeddings = get_embeddings()
         results = search_similar(
             client, embeddings, settings.qdrant_collection, question, top_k
@@ -91,7 +121,10 @@ async def ask_agent(
 
     # Invoke agent
     logger.info("  ├─ invoking LLM + agent loop ...")
-    result = await agent.ainvoke({"messages": messages})
+    result = await agent.ainvoke(
+        {"messages": messages},
+        config={"recursion_limit": 50},
+    )
 
     # ── Log every message in the agent trace ──
     final_messages = result.get("messages", [])

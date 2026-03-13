@@ -63,9 +63,24 @@ def _build_description_texts(schema: dict) -> tuple[list[str], list[dict]]:
     return texts, metas
 
 
+def _delete_schema_points(client, collection: str) -> int:
+    """Remove all existing table_schema points before re-indexing."""
+    from qdrant_client.models import Filter, FieldCondition, MatchValue
+    schema_filter = Filter(
+        must=[FieldCondition(key="type", match=MatchValue(value="table_schema"))]
+    )
+    result = client.delete(
+        collection_name=collection,
+        points_selector=schema_filter,
+    )
+    logger.info("schema_loader.cleaned_old", collection=collection)
+    return 0
+
+
 def load_all_schemas() -> int:
     """Read every JSON file in SCHEMA_DIR and upsert to Qdrant.
 
+    Cleans previous schema points first to avoid duplicates.
     Returns total number of indexed chunks.
     """
     client = get_qdrant_client()
@@ -73,6 +88,9 @@ def load_all_schemas() -> int:
     collection = settings.qdrant_collection
 
     ensure_collection(client, collection)
+
+    # Remove old schema entries to prevent duplicates
+    _delete_schema_points(client, collection)
 
     total = 0
     if not SCHEMA_DIR.exists():
