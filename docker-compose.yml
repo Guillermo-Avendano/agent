@@ -81,8 +81,6 @@ services:
     restart: unless-stopped
     ports:
       - "3001:3001"
-    volumes:
-      - anythingllm_data:/app/server/storage
     environment:
       STORAGE_DIR: /app/server/storage
       LLM_PROVIDER: generic-openai
@@ -132,4 +130,3 @@ services:
 volumes:
   pgdata:
   qdrant_data:
-  anythingllm_data:
