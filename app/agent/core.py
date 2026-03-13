@@ -89,7 +89,7 @@ async def ask_agent(
     final_messages = result.get("messages", [])
     answer = ""
     for msg in reversed(final_messages):
-        if hasattr(msg, "content") and msg.content and not hasattr(msg, "tool_calls"):
+        if hasattr(msg, "content") and msg.content and not getattr(msg, "tool_calls", None):
             answer = msg.content
             break
 

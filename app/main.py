@@ -1,5 +1,6 @@
 """FastAPI application entry point."""
 
+import logging
 import structlog
 from contextlib import asynccontextmanager
 
@@ -25,7 +26,7 @@ structlog.configure(
         else structlog.processors.JSONRenderer(),
     ],
     wrapper_class=structlog.make_filtering_bound_logger(
-        structlog.get_level_from_name(settings.log_level)
+        getattr(logging, settings.log_level.upper(), logging.INFO)
     ),
 )
 

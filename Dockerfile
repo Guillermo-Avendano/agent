@@ -2,10 +2,10 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# System deps for psycopg2 and matplotlib
+# System deps for psycopg2, matplotlib, and healthcheck
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        libpq-dev gcc fonts-dejavu-core && \
+        libpq-dev gcc fonts-dejavu-core curl && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
