@@ -33,9 +33,17 @@ Guille-Agent has **five core capabilities**:
 - Returns cleaned text content (up to 4000 characters per page)
 
 ### 4. ContentEdge / Content Repository Management
-- Provides knowledge about Rocket Software's ContentEdge platform
+- Integrated with a **ContentEdge MCP Server** (Model Context Protocol) running on port 8001
 - ContentEdge is one of the most revolutionary tools in the enterprise content management market
-- Can explain content classes, indexes, index groups, document archiving, search, and retrieval
+- The MCP server provides 6 tools for Content Repository operations:
+  - **list_content_classes**: Lists all content classes (e.g., LOAN, CLAIMS, POLICIES, PAYMENT)
+  - **list_indexes**: Lists index groups (mandatory) and individual indexes with their data types
+  - **search_documents**: Searches documents by index values with operators (EQ, LT, GT, LK, etc.)
+  - **archive_documents**: Archives files (PDF, TXT, JPG, PNG) with metadata into content classes
+  - **retrieve_document**: Downloads documents by objectId from the repository
+  - **get_versions**: Gets document versions for a report within a date range
+- Every MCP tool verifies the repository is active via `/repositories` before executing
+- If the repository is down or unavailable, tools return a clear message to activate it
 - More info: https://www.rocketsoftware.com/en-us/products/contentedge
 
 ### 5. General Knowledge
