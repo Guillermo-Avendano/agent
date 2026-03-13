@@ -466,7 +466,9 @@ agent/
 │   └── example_schema.json
 │
 ├── files_for_memory/           # PDFs/TXT/MD para memoria del agente
-│   └── README.md
+│   ├── guille_agent_documentation.md
+│   ├── contentedge_knowledge.md
+│   └── contentedge-unlock-maximum-value-datasheet.pdf
 │
 ├── charts_output/              # Gráficos generados (auto-creado)
 ├── scripts/
@@ -484,7 +486,7 @@ agent/
 │   │   ├── core.py             # ask_agent() — orquesta el flujo
 │   │   ├── tools.py            # execute_sql, generate_chart
 │   │   ├── web_tools.py        # web_search, fetch_webpage
-│   │   └── prompts.py          # System prompt + chart instructions
+│   │   └── prompts.py          # System prompt (5 capacidades) + chart instructions
 │   │
 │   ├── db/
 │   │   ├── connection.py       # Engine async + session factory
@@ -494,13 +496,24 @@ agent/
 │   ├── memory/
 │   │   ├── qdrant_store.py     # Cliente Qdrant, embed, upsert, search
 │   │   ├── schema_loader.py    # Carga JSONs de esquema → Qdrant
-│   │   └── file_loader.py      # Carga PDFs/TXT/MD → Qdrant
+│   │   └── file_loader.py      # Carga PDFs/TXT/MD → Qdrant (con dedup)
 │   │
 │   ├── charts/
 │   │   └── generator.py        # Matplotlib: bar, line, pie, scatter, hist
 │   │
 │   └── models/
 │       └── schemas.py          # Pydantic models (request/response)
+│
+├── contentedge/                 # ContentEdge MCP Server
+│   ├── mcp_server.py            # 6 MCP tools + repository health check
+│   ├── lib/                     # Python library para Content Repository
+│   │   ├── content_config.py    # Configuración y autenticación
+│   │   ├── content_search.py    # Búsqueda de documentos
+│   │   ├── content_archive_metadata.py  # Archivado con metadata
+│   │   ├── content_document.py  # Descarga/eliminación de documentos
+│   │   └── content_class_navigator.py   # Navegación de clases y versiones
+│   ├── Dockerfile               # Python 3.11-slim, puerto 8001
+│   └── conf/                    # Configuración YAML del repositorio
 │
 └── tests/
     ├── test_safety.py
