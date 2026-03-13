@@ -1,36 +1,39 @@
-# SQL Agent — AI Database Assistant
+# Guille-Agent — AI-Powered Intelligent Assistant
 
-Agente de IA que consulta PostgreSQL, explica resultados y genera gráficos.  
-Usa **Ollama** como LLM local, **Qdrant** para memoria vectorial y **LangChain** como framework de agente.
+Agente de IA versátil que consulta PostgreSQL, explica resultados, genera gráficos, busca en la web y gestiona documentos en ContentEdge.  
+Usa **Ollama** como LLM local, **Qdrant** para memoria vectorial, **LangChain** como framework de agente y **ContentEdge MCP** para gestión documental.
 
 ## Arquitectura
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌──────────────┐
-│   FastAPI    │────▶│  LangChain   │────▶│   Ollama     │
-│   (API)      │     │  ReAct Agent │     │  (llama3)    │
+│ AnythingLLM  │────▶│  LangChain   │────▶│   Ollama     │
+│   (chat UI)  │     │  ReAct Agent │     │  (gpt-oss)   │
 └──────┬───────┘     └──────┬───────┘     └──────────────┘
        │                    │
-       │              ┌─────┴──────┐
-       │              │            │
-  ┌────▼─────┐  ┌─────▼────┐ ┌────▼──────┐
-  │PostgreSQL │  │  Qdrant  │ │Matplotlib │
-  │ (datos)   │  │(memoria) │ │ (charts)  │
-  └───────────┘  └──────────┘ └───────────┘
+       │         ┌──────────┼──────────┬────────────┐
+       │         │          │          │            │
+  ┌────▼─────┐ ┌─▼────────┐ ┌────▼──────┐ ┌────────▼─────┐
+  │PostgreSQL │ │  Qdrant  │ │Matplotlib │ │ ContentEdge  │
+  │ (datos)   │ │(memoria) │ │ (charts)  │ │  MCP Server  │
+  └───────────┘ └──────────┘ └───────────┘ └──────────────┘
 ```
 
 ## Stack Tecnológico
 
-| Componente       | Tecnología         |
-|------------------|--------------------|
-| LLM              | Ollama (llama3)    |
-| Embeddings       | nomic-embed-text   |
-| Framework agente | LangChain + LangGraph |
-| Base de datos    | PostgreSQL 16      |
-| Vector store     | Qdrant             |
-| API              | FastAPI            |
-| Gráficos         | Matplotlib         |
-| Contenedores     | Docker Compose     |
+| Componente       | Tecnología              |
+|------------------|-------------------------|
+| LLM              | Ollama (gpt-oss)        |
+| Embeddings       | nomic-embed-text (768d) |
+| Framework agente | LangChain + LangGraph   |
+| Base de datos    | PostgreSQL 16           |
+| Vector store     | Qdrant                  |
+| API              | FastAPI                 |
+| Gráficos         | Matplotlib              |
+| Web Search       | Browserless + DuckDuckGo|
+| Content Mgmt     | ContentEdge MCP Server  |
+| Chat UI          | AnythingLLM             |
+| Contenedores     | Docker Compose          |
 
 ## Requisitos
 
