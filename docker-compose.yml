@@ -54,8 +54,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 10s
+      retries: 10
+      start_period: 30s
 
   # ─── Browserless Chromium (web scraping) ───────────────────
   browserless:
