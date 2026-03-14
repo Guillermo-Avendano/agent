@@ -25,7 +25,11 @@ class Settings(BaseSettings):
     # Browserless
     browserless_url: str = Field(default="http://browserless:3000")
 
+    # ContentEdge MCP
+    contentedge_mcp_url: str = Field(default="http://contentedge-mcp:8001")
+
     # App
+    agent_name: str = Field(default="Guille-Agent")
     app_host: str = Field(default="0.0.0.0")
     app_port: int = Field(default=8000)
     app_base_url: str = Field(default="http://localhost:8000")

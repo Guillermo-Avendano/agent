@@ -36,7 +36,7 @@ async def list_models():
     """List available models (AnythingLLM calls this on setup)."""
     return OpenAIModelList(
         data=[
-            OpenAIModel(id="guille-agent", created=int(time.time())),
+            OpenAIModel(id=settings.agent_name, created=int(time.time())),
         ]
     )
 

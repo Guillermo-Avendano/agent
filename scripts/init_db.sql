@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS order_items (
 -- ─── Sample Data ────────────────────────────────────────────
 INSERT INTO customers (name, email) VALUES
     ('Alice Johnson', 'alice@example.com'),
-    ('Bob Smith', 'bob@example.com'),
+    ('John Smith', 'john@example.com'),
     ('Carmen García', 'carmen@example.com'),
     ('David Lee', 'david@example.com'),
     ('Elena Petrova', 'elena@example.com');

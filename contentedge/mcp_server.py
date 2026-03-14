@@ -6,8 +6,9 @@ Tools:
   - list_indexes: List indexes and index groups (with mandatory grouping info)
   - search_documents: Search documents by index values
   - archive_documents: Archive files (PDF, TXT, JPG, PNG) with metadata
-  - retrieve_document: Download a document by objectId
+  - retrieve_document: Get a viewer URL for a document by objectId
   - get_versions: Get document versions for a report within a date range
+  - smart_chat: Ask questions to the Smart Chat AI (repository-wide or scoped to documents)
 """
 
 import os
@@ -467,23 +468,17 @@ def get_versions(
 @mcp.tool()
 def retrieve_document(
     object_id: str,
-    filename: str | None = None,
 ) -> str:
-    """Download a document from the Content Repository by its objectId.
+    """Get a viewer URL for a document from the Content Repository.
 
     Use search_documents first to obtain objectIds, then call this tool
-    to retrieve the actual file content.
-
-    The document is saved to the working directory and can then be served
-    to the user or further processed.
+    to get a URL that opens the document in the Mobius View browser viewer.
 
     Args:
         object_id: The encrypted objectId returned by search_documents.
-        filename: Optional filename for the saved file.  If omitted the
-                  server generates one from the response Content-Type.
 
     Returns:
-        JSON with the saved file path, size in bytes, and content type.
+        JSON with the viewer URL for the document.
     """
     from lib.content_document import ContentDocument
 
@@ -491,11 +486,9 @@ def retrieve_document(
     if repo_err:
         return repo_err
 
-    downloads_dir = os.path.join(WORK_DIR, "downloads")
-
     try:
         doc_client = ContentDocument(source_config)
-        saved_path = doc_client.retrieve_document(object_id, downloads_dir, filename)
+        viewer_url = doc_client.retrieve_document(object_id)
     except ValueError as exc:
         logger.error("retrieve_document failed: %s", exc)
         return json.dumps({"error": str(exc)})
@@ -503,16 +496,85 @@ def retrieve_document(
         logger.error("retrieve_document unexpected error: %s", exc)
         return json.dumps({"error": str(exc)})
 
-    file_size = os.path.getsize(saved_path)
-    saved_name = os.path.basename(saved_path)
-    logger.info("Retrieved document: %s (%d bytes)", saved_name, file_size)
+    logger.info("Viewer URL obtained for object_id: %s", object_id[:40])
 
     return json.dumps({
         "success": True,
-        "file": saved_name,
-        "path": saved_path,
-        "size_bytes": file_size,
+        "viewer_url": viewer_url,
     })
+
+
+# ---------------------------------------------------------------------------
+# MCP Tool: smart_chat
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def smart_chat(
+    question: str,
+    document_ids: list[str] | None = None,
+    conversation_id: str = "",
+) -> str:
+    """Ask a question to the Content Repository Smart Chat AI.
+
+    This tool has two modes of operation:
+
+    1. **Repository-wide query** — pass document_ids as an empty list (or
+       omit it).  Smart Chat searches the entire repository to answer.
+    2. **Scoped to specific documents** — pass a list of objectIds
+       (obtained from search_documents) so Smart Chat only analyses those
+       documents.
+
+    For follow-up questions in the same conversation, pass the
+    conversation_id returned by the previous call to maintain context.
+
+    Typical workflow combining search + smart_chat:
+      1. search_documents(constraints=[{"index_name":"CUST_ID","value":"1000"}])
+      2. smart_chat(question="Summarize the loan application",
+                    document_ids=<object_ids from step 1>)
+      3. smart_chat(question="What is the applicant's address?",
+                    document_ids=<same ids>,
+                    conversation_id=<conversation_id from step 2>)
+
+    Args:
+        question: The question to ask Smart Chat.
+        document_ids: Optional list of document objectIds to limit scope.
+                      Use [] or omit to query the whole repository.
+        conversation_id: Optional conversation ID from a previous smart_chat
+                         response, to continue the conversation.
+
+    Returns:
+        JSON with the answer, conversation_id for follow-ups, and
+        matching_document_ids relevant to the answer.
+    """
+    from lib.content_smart_chat import ContentSmartChat
+
+    repo_err = _check_repository_active(source_config)
+    if repo_err:
+        return repo_err
+
+    try:
+        chat_client = ContentSmartChat(source_config)
+        result = chat_client.smart_chat(
+            user_query=question,
+            document_ids=document_ids,
+            conversation=conversation_id,
+        )
+    except ValueError as exc:
+        logger.error("smart_chat failed: %s", exc)
+        return json.dumps({"error": str(exc)})
+    except Exception as exc:
+        logger.error("smart_chat unexpected error: %s", exc)
+        return json.dumps({"error": str(exc)})
+
+    logger.info("smart_chat answered (conversation=%s, matching_docs=%d)",
+                result.conversation[:20] if result.conversation else "new",
+                len(result.object_ids))
+
+    return json.dumps({
+        "success": True,
+        "answer": result.answer,
+        "conversation_id": result.conversation,
+        "matching_document_ids": result.object_ids,
+    }, ensure_ascii=False)
 
 
 # ---------------------------------------------------------------------------

@@ -1,10 +1,8 @@
 import json
-import os
 import requests
 import urllib3
 import warnings
 from copy import deepcopy
-from urllib.parse import quote
 
 from .content_config import ContentConfig
 
@@ -26,60 +24,48 @@ class ContentDocument:
         else:
             raise TypeError("ContentConfig class object expected")
 
-    def retrieve_document(self, object_id: str, output_dir: str, filename: str | None = None) -> str:
-        """Download a document from the repository using its objectId.
+    def retrieve_document(self, object_id: str) -> str:
+        """Get a viewer URL for a document using the Hostviewer endpoint.
 
-        Uses the endpoint: GET /mobius/rest/contentstreams?id={objectId}
+        Uses the endpoint: POST /mobius/rest/hostviewer
+        (createHostViewerURLPost) which returns a URL to view the document
+        in the browser instead of downloading it.
 
         Args:
             object_id: The encrypted objectId returned by a search.
-            output_dir: Directory where the file will be saved.
-            filename: Optional filename. If not provided, one is generated from
-                      the Content-Disposition header or a default name.
 
         Returns:
-            Absolute path of the saved file.
+            The viewer URL string for the document.
         """
-        encoded_id = quote(object_id, safe='')
-        url = f"{self.base_url}/mobius/rest/contentstreams?id={encoded_id}"
+        url = f"{self.base_url}/mobius/rest/hostviewer"
 
         headers = deepcopy(self.headers)
+        headers["Content-Type"] = "application/json"
+
+        payload = {
+            "objectId": object_id,
+            "repositoryId": self.repo_id,
+        }
 
         self.logger.info("--------------------------------")
-        self.logger.info("Method : retrieve_document")
-        self.logger.debug(f"URL : {url[:200]}")
+        self.logger.info("Method : retrieve_document (hostviewer)")
+        self.logger.debug(f"URL : {url}")
 
-        response = requests.get(url, headers=headers, verify=False, timeout=60)
+        response = requests.post(url, headers=headers, json=payload, verify=False, timeout=60)
 
         if response.status_code != 200:
-            self.logger.error(f"Retrieve failed: HTTP {response.status_code} — {response.text[:300]}")
-            raise ValueError(f"Failed to retrieve document: HTTP {response.status_code}")
+            self.logger.error(f"Hostviewer failed: HTTP {response.status_code} — {response.text[:300]}")
+            raise ValueError(f"Failed to get viewer URL: HTTP {response.status_code}")
 
-        # Determine filename
-        if not filename:
-            cd = response.headers.get("Content-Disposition", "")
-            if "filename=" in cd:
-                filename = cd.split("filename=")[-1].strip('" ')
-            else:
-                # Infer extension from Content-Type
-                ct = response.headers.get("Content-Type", "application/octet-stream")
-                ext_map = {
-                    "application/pdf": ".pdf",
-                    "text/plain": ".txt",
-                    "image/png": ".png",
-                    "image/jpeg": ".jpg",
-                }
-                ext = ext_map.get(ct, ".bin")
-                filename = f"document{ext}"
+        data = response.json()
+        viewer_url = data.get("url") or data.get("viewerUrl") or data.get("hostViewerUrl", "")
 
-        os.makedirs(output_dir, exist_ok=True)
-        output_path = os.path.join(output_dir, filename)
+        if not viewer_url:
+            self.logger.error(f"No viewer URL in response: {json.dumps(data)[:300]}")
+            raise ValueError("Hostviewer response did not contain a viewer URL")
 
-        with open(output_path, "wb") as f:
-            f.write(response.content)
-
-        self.logger.info(f"Document saved: {output_path} ({len(response.content)} bytes)")
-        return output_path
+        self.logger.info(f"Viewer URL obtained: {viewer_url[:200]}")
+        return viewer_url
 
     def delete_document(self, document_id: str) -> int:
         """Delete a document from the Content Repository by its document ID."""

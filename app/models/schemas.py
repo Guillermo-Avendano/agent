@@ -1,6 +1,7 @@
 """Pydantic request/response models for the API."""
 
 from pydantic import BaseModel, Field
+from app.config import settings
 
 
 class ChatMessage(BaseModel):
@@ -47,7 +48,7 @@ class OpenAIChatMessage(BaseModel):
 
 
 class OpenAIChatRequest(BaseModel):
-    model: str = Field(default="guille-agent")
+    model: str = Field(default_factory=lambda: settings.agent_name)
     messages: list[OpenAIChatMessage] = Field(..., min_length=1)
     temperature: float = Field(default=0.0)
     max_tokens: int | None = Field(default=None)
@@ -70,7 +71,7 @@ class OpenAIChatResponse(BaseModel):
     id: str
     object: str = "chat.completion"
     created: int
-    model: str = "guille-agent"
+    model: str = Field(default_factory=lambda: settings.agent_name)
     choices: list[OpenAIChatChoice]
     usage: OpenAIUsage = OpenAIUsage()
 
@@ -79,7 +80,7 @@ class OpenAIModel(BaseModel):
     id: str
     object: str = "model"
     created: int = 0
-    owned_by: str = "guille-agent"
+    owned_by: str = Field(default_factory=lambda: settings.agent_name)
 
 
 class OpenAIModelList(BaseModel):

@@ -1,198 +1,50 @@
 # Guille-Agent — AI-Powered Intelligent Assistant
 
-Agente de IA versátil que consulta PostgreSQL, explica resultados, genera gráficos, busca en la web y gestiona documentos en ContentEdge.  
-Usa **Ollama** como LLM local, **Qdrant** para memoria vectorial, **LangChain** como framework de agente y **ContentEdge MCP** para gestión documental.
+Versatile AI agent that queries PostgreSQL, explains results, generates charts,
+searches the web, and manages documents in ContentEdge.
 
-## Arquitectura
+Uses **Ollama** as local LLM, **Qdrant** for vector memory, **LangChain** as
+agent framework, and **ContentEdge MCP** for document management.
 
-```
-┌─────────────┐     ┌──────────────┐     ┌──────────────┐
-│ AnythingLLM  │────▶│  LangChain   │────▶│   Ollama     │
-│   (chat UI)  │     │  ReAct Agent │     │  (gpt-oss)   │
-└──────┬───────┘     └──────┬───────┘     └──────────────┘
-       │                    │
-       │         ┌──────────┼──────────┬────────────┐
-       │         │          │          │            │
-  ┌────▼─────┐ ┌─▼────────┐ ┌────▼──────┐ ┌────────▼─────┐
-  │PostgreSQL │ │  Qdrant  │ │Matplotlib │ │ ContentEdge  │
-  │ (datos)   │ │(memoria) │ │ (charts)  │ │  MCP Server  │
-  └───────────┘ └──────────┘ └───────────┘ └──────────────┘
-```
-
-## Stack Tecnológico
-
-| Componente       | Tecnología              |
-|------------------|-------------------------|
-| LLM              | Ollama (gpt-oss)        |
-| Embeddings       | nomic-embed-text (768d) |
-| Framework agente | LangChain + LangGraph   |
-| Base de datos    | PostgreSQL 16           |
-| Vector store     | Qdrant                  |
-| API              | FastAPI                 |
-| Gráficos         | Matplotlib              |
-| Web Search       | Browserless + DuckDuckGo|
-| Content Mgmt     | ContentEdge MCP Server  |
-| Chat UI          | AnythingLLM             |
-| Contenedores     | Docker Compose          |
-
-## Requisitos
-
-- Docker y Docker Compose
-- 8 GB+ RAM (para Ollama)
-- GPU NVIDIA opcional (descomenta la sección GPU en `docker-compose.yml`)
-
-## Inicio Rápido
-
-### 1. Clonar y configurar
+## Quick Start
 
 ```bash
 cp .env.example .env
-# Edita .env con tus credenciales si es necesario
-```
-
-### 2. Levantar servicios
-
-```bash
 docker compose up -d --build
-```
-
-Esto levanta: PostgreSQL, Qdrant, Ollama (auto-descarga modelos) y la API.
-
-### 3. Cargar descripciones del esquema
-
-```bash
 curl -X POST http://localhost:8000/schema/load
 ```
 
-### 4. Hacer preguntas
+Then open AnythingLLM at `http://localhost:3001` or call the API directly:
 
 ```bash
 curl -X POST http://localhost:8000/ask \
   -H "Content-Type: application/json" \
-  -d '{"question": "¿Cuáles son los 5 clientes que más han gastado?"}'
+  -d '{"question": "What are the top 5 customers by spending?"}'
 ```
 
-### 5. Pedir un gráfico
+## Documentation
 
-```bash
-curl -X POST http://localhost:8000/ask \
-  -H "Content-Type: application/json" \
-  -d '{"question": "Muéstrame un gráfico de barras con las ventas por categoría de producto"}'
-```
+All documentation is in the [`doc/`](doc/) directory:
 
-Los gráficos se sirven desde: `GET /charts/{filename}`
+| Document | Description |
+|---|---|
+| [README.md](doc/README.md) | Full project overview, tech stack, endpoints, security |
+| [ARCHITECTURE.md](doc/ARCHITECTURE.md) | System architecture, services, tools, file structure |
+| [FLOW_ASK.md](doc/FLOW_ASK.md) | Question processing flow |
+| [FLOW_SQL.md](doc/FLOW_SQL.md) | SQL query execution and security |
+| [FLOW_CHARTS.md](doc/FLOW_CHARTS.md) | Chart generation with Matplotlib |
+| [FLOW_MEMORY.md](doc/FLOW_MEMORY.md) | RAG memory system (Qdrant) |
+| [FLOW_STARTUP.md](doc/FLOW_STARTUP.md) | Application startup sequence |
+| [FLOW_WEB.md](doc/FLOW_WEB.md) | Web search (Browserless + DuckDuckGo) |
+| [FLOW_CONTENTEDGE.md](doc/FLOW_CONTENTEDGE.md) | ContentEdge MCP: Smart Chat, search, viewer URLs |
 
-## Endpoints API
+## Services
 
-| Método | Ruta            | Descripción                              |
-|--------|-----------------|------------------------------------------|
-| GET    | `/health`       | Estado de salud de todos los servicios   |
-| POST   | `/schema/load`  | Indexar descripciones de schema en Qdrant|
-| POST   | `/ask`          | Enviar pregunta al agente                |
-| GET    | `/charts/{file}`| Descargar un gráfico generado            |
-| GET    | `/v1/models`    | Lista modelos (devuelve "guille-agent")  |
-| POST   | `/v1/chat/completions` | Chat completions (AnythingLLM)  |
-
-## Estructura del Proyecto
-
-```
-agent/
-├── docker-compose.yml          # Orquestación de servicios
-├── Dockerfile                  # Imagen de la API
-├── requirements.txt            # Dependencias Python
-├── .env.example                # Variables de entorno template
-├── schema_descriptions/        # JSONs con descripción de tablas
-│   └── example_schema.json
-├── scripts/
-│   └── init_db.sql             # Schema + datos de ejemplo
-├── app/
-│   ├── main.py                 # Entry point FastAPI
-│   ├── config.py               # Configuración (pydantic-settings)
-│   ├── api/
-│   │   └── routes.py           # Endpoints REST
-│   ├── models/
-│   │   └── schemas.py          # Modelos Pydantic request/response
-│   ├── db/
-│   │   ├── connection.py       # Pool async SQLAlchemy
-│   │   ├── safety.py           # Validador SQL anti-inyección
-│   │   └── executor.py         # Ejecución segura de queries
-│   ├── agent/
-│   │   ├── core.py             # Agente ReAct (LangChain + Ollama)
-│   │   ├── prompts.py          # System prompts (5 capacidades)
-│   │   ├── tools.py            # Tools: execute_sql, generate_chart
-│   │   └── web_tools.py        # Tools: web_search, fetch_webpage
-│   ├── memory/
-│   │   ├── qdrant_store.py     # Cliente Qdrant + embed/search
-│   │   ├── schema_loader.py    # Carga JSONs → Qdrant
-│   │   └── file_loader.py      # Carga PDFs/TXT/MD → Qdrant (con dedup)
-│   └── charts/
-│       └── generator.py        # Generador Matplotlib
-├── contentedge/                 # ContentEdge MCP Server
-│   ├── mcp_server.py            # 6 MCP tools + health check
-│   ├── lib/                     # Python library para Content Repository
-│   ├── Dockerfile               # Imagen MCP server
-│   └── conf/                    # Configuración YAML del repositorio
-└── tests/
-    ├── test_safety.py          # Tests de validación SQL
-    └── test_charts.py          # Tests de generación de charts
-```
-
-## Personalización del Schema
-
-Crea archivos JSON en `schema_descriptions/` con este formato:
-
-```json
-{
-  "tables": [
-    {
-      "name": "mi_tabla",
-      "description": "Descripción detallada de la tabla.",
-      "columns": [
-        {
-          "name": "columna1",
-          "type": "varchar(100)",
-          "description": "Qué contiene esta columna."
-        }
-      ]
-    }
-  ]
-}
-```
-
-Luego ejecuta `POST /schema/load` para indexar.
-
-## Seguridad
-
-- **SQL Injection**: Queries validadas con `sqlparse` + ejecutadas con `text()` parametrizado
-- **Modo readonly**: Bloquea INSERT/UPDATE/DELETE/DROP por defecto
-- **Funciones peligrosas bloqueadas**: `pg_sleep`, `pg_read_file`, `lo_import`, etc.
-- **Multi-statement bloqueado**: Solo una sentencia SQL por request
-- **Rate limiting**: 30 requests/minuto por IP
-- **CORS**: Orígenes configurables
-- **Path traversal**: Nombres de archivo sanitizados en endpoint de charts
-- **Validación de entrada**: Modelos Pydantic con restricciones de longitud
-
-## GPU (Opcional)
-
-Para usar GPU NVIDIA con Ollama, descomenta en `docker-compose.yml`:
-
-```yaml
-deploy:
-  resources:
-    reservations:
-      devices:
-        - driver: nvidia
-          count: all
-          capabilities: [gpu]
-```
-
-## Tests
-
-```bash
-# Dentro del contenedor
-docker compose exec agent-api pytest tests/ -v
-
-# O localmente con virtualenv
-pip install -r requirements.txt
-pytest tests/ -v
-```
+| Service | Port | Purpose |
+|---|---|---|
+| agent-api | 8000 | FastAPI — the agent's brain |
+| contentedge-mcp | 8001 | Standard MCP server (7 tools) |
+| anythingllm | 3001 | Chat web UI |
+| postgres | 5432 | PostgreSQL 16 |
+| qdrant | 6333 | Vector database |
+| ollama | 11434 | LLM server |

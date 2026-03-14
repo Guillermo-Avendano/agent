@@ -85,12 +85,16 @@ services:
       STORAGE_DIR: /app/server/storage
       LLM_PROVIDER: generic-openai
       GENERIC_OPEN_AI_BASE_PATH: http://agent-api:8000/v1
-      GENERIC_OPEN_AI_MODEL_PREF: guille-agent
+      GENERIC_OPEN_AI_MODEL_PREF: ${AGENT_NAME:-Guille-Agent}
       GENERIC_OPEN_AI_TOKEN_LIMIT: 8192
       # No API key needed — leave empty
       GENERIC_OPEN_AI_API_KEY: sk-not-required
+    volumes:
+      - ./anythingllm/plugins:/app/server/storage/plugins
     depends_on:
       agent-api:
+        condition: service_healthy
+      contentedge-mcp:
         condition: service_healthy
 
   # ─── ContentEdge MCP Server ────────────────────────────────

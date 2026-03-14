@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "face-generator": {
+      "command": "npx",
+      "args": [
+        "@dasheck0/face-generator"
+      ],
+      "env": { // optional, some MCP servers may require additional environment variables
+        "MY_ENV_VAR": "my-env-var-value"
+      }
+    },
+    "mcp-youtube": {
+      "command": "uvx",
+      "args": [
+        "mcp-youtube"
+      ],
+    },
+	  "mcp-rocket-ce": {
+    "contentedge": {
+      "type": "sse",
+      "url": "http://127.0.0.1:8001/sse"
+    }
+    },
+    "postgres-http": {
+      "type": "streamable", // or "sse"
+      "url": "http://localhost:3003",
+      "headers": {
+        "X-API-KEY": "api-key"
+      }
+    }
+  }
+}

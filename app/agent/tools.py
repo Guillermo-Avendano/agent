@@ -87,5 +87,6 @@ def generate_chart(chart_type: str, x: str, y: str, title: str = "Chart") -> str
 
 
 from app.agent.web_tools import WEB_TOOLS
+from app.agent.contentedge_tools import CONTENTEDGE_TOOLS
 
-AGENT_TOOLS = [execute_sql, generate_chart] + WEB_TOOLS
+AGENT_TOOLS = [execute_sql, generate_chart] + WEB_TOOLS + CONTENTEDGE_TOOLS

@@ -137,6 +137,7 @@ async def ask_agent(
         logger.info("  ├─ no document context matched")
 
     system_text = SYSTEM_PROMPT.format(
+        agent_name=settings.agent_name,
         schema_context=schema_context,
         max_rows=settings.max_query_rows,
         document_context=doc_context,

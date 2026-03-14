@@ -11,6 +11,7 @@ langchain-ollama==0.3.*
 langgraph==0.3.*
 qdrant-client==1.13.*
 httpx==0.28.*
+mcp>=1.0.0
 matplotlib==3.10.*
 plotly==6.*
 kaleido==0.2.*
