@@ -103,6 +103,8 @@ services:
     restart: unless-stopped
     expose:
       - "8001"
+    ports:
+      - "8001:8001"
     volumes:
       - ./contentedge/files:/app/files
       - ./contentedge/conf:/app/conf
@@ -126,7 +128,7 @@ services:
       CE_TARGET_REPO_SERVER_USER: ${CE_TARGET_REPO_SERVER_USER:-}
       CE_TARGET_REPO_SERVER_PASS: ${CE_TARGET_REPO_SERVER_PASS:-}
     healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:8001/sse || exit 1"]
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8001/sse', timeout=3)\" || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
